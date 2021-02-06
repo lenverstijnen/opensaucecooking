@@ -5,10 +5,12 @@ import httpService from "../services/http.service";
 export const Home = () => {
   const [recipes, setRecipes] = useRecipeContext();
   useEffect(() => {
-    httpService.get("http://localhost:3001/api/recipes").then((recipes) => {
-      setRecipes(recipes as any);
-    });
-  });
+    const fetchData = async () => {
+      const result = await httpService.get("recipe");
+      setRecipes(result.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
