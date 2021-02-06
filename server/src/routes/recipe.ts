@@ -8,4 +8,6 @@ router.get("/", recipe.getAll)
 
 router.post("/", [validateRecipe], recipe.create)
 
+router.delete("/:id", recipe.delete)
+
 export default router
