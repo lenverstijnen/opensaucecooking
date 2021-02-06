@@ -1,0 +1,19 @@
+{
+  "name": "opensaucecooking",
+  "version": "1.0.0",
+  "description": "## Requirements * Account (profile) * Daarin recepten   * foto's / media   * ingredienten (met hoeveelheden en evt. calculator)   * voor hoeveel personen   * stappen     * foto's / media * Recepten kunnen bewaren * Recepten kunnen raten * Recepten kunnen 'forken' * Comments op recepten kunnen schrijven * Een account kunnen volgen (later) * Star accounts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lenverstijnen/opensaucecooking.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lenverstijnen/opensaucecooking/issues"
+  },
+  "homepage": "https://github.com/lenverstijnen/opensaucecooking#readme"
+}
