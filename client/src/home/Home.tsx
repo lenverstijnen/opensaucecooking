@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { IRecipe } from "../../../server/src/models/Recipe";
-import { useRecipeContext } from "../context/recipe-context";
+import { useRecipeContext } from "../recipes/recipe-context";
 import crudService from "../services/crud.service";
 
 export const Home = () => {

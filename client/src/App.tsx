@@ -4,6 +4,7 @@ import { Home } from "./home/Home";
 import { Profile } from "./profile/Profile";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { AppHeader } from "./app-header/AppHeader";
+import { RecipeRoutes } from "./recipes/RecipeRoutes";
 
 export default function App() {
   return (
@@ -11,7 +12,7 @@ export default function App() {
       <AppHeader />
       <Switch>
         <ProtectedRoute path="/profile" component={Profile} />
-        <Route path="/" component={Home} exact />
+        <Route path="/" component={RecipeRoutes} />
       </Switch>
     </div>
   );

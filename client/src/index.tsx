@@ -5,7 +5,6 @@ import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { RecipeContextProvider } from "./context/recipe-context";
 
 const domain = process.env.REACT_APP_DOMAIN;
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -20,11 +19,9 @@ ReactDOM.render(
       clientId={clientId}
       redirectUri={redirectUri}
     >
-      <RecipeContextProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </RecipeContextProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Auth0Provider>
   </React.Fragment>,
   document.getElementById("root")

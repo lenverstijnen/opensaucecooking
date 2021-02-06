@@ -3,7 +3,7 @@ import {
   createProvider,
   createTypedContext,
   useTypedContext,
-} from "./context-type";
+} from "../context/context-type";
 
 export const RecipeContext = createTypedContext<IRecipe[]>();
 export const RecipeContextProvider = createProvider(RecipeContext, []);

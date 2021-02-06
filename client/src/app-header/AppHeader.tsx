@@ -11,7 +11,7 @@ export const AppHeader = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
           Open Sauce Cooking
