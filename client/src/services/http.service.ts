@@ -1,7 +1,7 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:3001/api";
+axios.defaults.baseURL = `${process.env.REACT_APP_SERVER_URL}/api`;
 
 export default {
   ...axios,
