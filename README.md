@@ -15,3 +15,9 @@
 * Een account kunnen volgen (later)
 * Star accounts
  
+ ## Stack
+ MongoDB + Mongoose (Typescript)
+ NodeJS (NestJS)
+ React
+
+ 
