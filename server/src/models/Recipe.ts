@@ -9,7 +9,6 @@ export interface IIngredient {
   quantity: number
   unit: UnitEnum
 }
-
 export interface IRating {
   userId: ObjectId
   value: number
