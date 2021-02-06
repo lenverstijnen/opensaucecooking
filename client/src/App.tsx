@@ -1,9 +1,14 @@
-import './App.css';
+import { Route, Switch } from "react-router-dom";
+import "./App.css";
+import { Home } from "./home/Home";
+import { Profile } from "./profile/Profile";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
 
-function App() {
+export default function App() {
   return (
-   <h1>Open Sauce Cooking</h1> 
+    <Switch>
+      <ProtectedRoute path="/profile" component={Profile} />
+      <Route path="/" component={Home} exact />
+    </Switch>
   );
 }
-
-export default App;
