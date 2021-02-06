@@ -1,11 +1,13 @@
-import { auth, ConfigParams } from "express-openid-connect";
-import { Express } from "express";
+import { auth, ConfigParams } from "express-openid-connect"
+import { Express } from "express"
+
+const isDevelopment = process.env.NODE_ENV === "development"
 
 const config: ConfigParams = {
-  authRequired: true,
+  authRequired: isDevelopment ? false : true,
   auth0Logout: true,
-};
+}
 
 export const startAuth = (app: Express) => {
-  app.use(auth(config));
-};
+  app.use(auth(config))
+}
