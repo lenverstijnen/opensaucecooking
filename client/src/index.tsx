@@ -5,6 +5,7 @@ import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { RecipeContextProvider } from "./context/recipe-context";
 
 const domain = process.env.REACT_APP_DOMAIN;
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -13,17 +14,19 @@ if (!domain || !clientId) throw new Error("Environment variables not set");
 const redirectUri = window.location.origin;
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Auth0Provider
       domain={domain}
       clientId={clientId}
       redirectUri={redirectUri}
     >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RecipeContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </RecipeContextProvider>
     </Auth0Provider>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );
 
