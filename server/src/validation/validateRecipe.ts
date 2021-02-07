@@ -4,6 +4,7 @@ import Joi from "joi"
 import { validators } from "./validators"
 
 const ingredientSchema = {
+  _id: validators.objectId,
   name: Joi.string().max(255).required(),
   quantity: Joi.number().required(),
   unit: Joi.string().valid("gram", "liter"), // TODO: types definieren.
@@ -15,6 +16,7 @@ const ratingSchema = {
 }
 
 const schema = {
+  _id: validators.objectId,
   name: validators.shortString.required(),
   steps: Joi.array().items(Joi.string().required()),
   ingredients: Joi.array().items(ingredientSchema),

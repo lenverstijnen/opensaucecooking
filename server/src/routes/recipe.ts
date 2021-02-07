@@ -11,6 +11,8 @@ router.get("/:id", [validateId], recipe.getOne)
 
 router.post("/", [validateRecipe], recipe.create)
 
+router.put("/:id", [validateId, validateRecipe], recipe.update)
+
 router.delete("/:id", [validateId], recipe.delete)
 
 export default router

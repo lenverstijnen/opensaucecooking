@@ -1,11 +1,13 @@
 import { create } from "./create"
-import { getAll } from "./getAll"
 import { deleteRecipe } from "./delete"
+import { getAll } from "./getAll"
 import { getOne } from "./getOne"
+import { update } from "./update"
 
 export default {
-  getOne,
   create,
-  getAll,
   delete: deleteRecipe,
+  getAll,
+  getOne,
+  update,
 }
