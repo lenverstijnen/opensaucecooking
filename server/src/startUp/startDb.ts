@@ -7,9 +7,9 @@ mongoose.set("useCreateIndex", true)
 
 const dbUri = process.env.DB_URI
 
-export default () => {
+export default async () => {
   try {
-    mongoose.connect(dbUri as string)
+    await mongoose.connect(dbUri as string)
     console.log("Connected to MongoDb")
   } catch (error) {
     console.log(error)
