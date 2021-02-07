@@ -7,6 +7,8 @@ const router = express.Router()
 
 router.get("/", recipe.getAll)
 
+router.get("/:id", [validateId], recipe.getOne)
+
 router.post("/", [validateRecipe], recipe.create)
 
 router.delete("/:id", [validateId], recipe.delete)
