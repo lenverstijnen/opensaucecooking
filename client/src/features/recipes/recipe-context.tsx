@@ -1,9 +1,9 @@
-import type { IRecipe } from "../../../server/src/models/Recipe";
+import type { IRecipe } from "../../../../server/src/models/Recipe";
 import {
   createProvider,
   createTypedContext,
   useTypedContext,
-} from "../context/context-type";
+} from "../../context/context-type";
 
 export const RecipeContext = createTypedContext<IRecipe[]>();
 export const RecipeContextProvider = createProvider(RecipeContext, []);

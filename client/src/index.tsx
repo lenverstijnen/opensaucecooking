@@ -2,27 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-
-const domain = process.env.REACT_APP_DOMAIN;
-const clientId = process.env.REACT_APP_CLIENT_ID;
-if (!domain || !clientId) throw new Error("Environment variables not set");
-
-const redirectUri = window.location.origin;
+import { AuthProvider } from "./auth/AuthProvider";
+import { Provider } from "react-redux";
+import store from "./store";
 
 ReactDOM.render(
   <React.Fragment>
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      redirectUri={redirectUri}
-    >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Auth0Provider>
+    <BrowserRouter>
+      <AuthProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.Fragment>,
   document.getElementById("root")
 );

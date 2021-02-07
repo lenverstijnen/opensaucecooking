@@ -10,10 +10,10 @@ import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 const LoginButton = () => {
-  const { loginWithPopup } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
   return (
-    <Button color="inherit" onClick={loginWithPopup}>
+    <Button color="inherit" onClick={loginWithRedirect}>
       Login
     </Button>
   );
@@ -21,7 +21,6 @@ const LoginButton = () => {
 
 export const AuthButton = () => {
   const { isAuthenticated, user, logout, loginWithPopup } = useAuth0();
-  const { push } = useHistory();
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
