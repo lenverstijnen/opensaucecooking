@@ -1,9 +1,12 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import {
+  createAsyncThunk,
   createEntityAdapter,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { IRecipe } from "../../../../server/src/models/Recipe";
+import httpService from "../../services/http.service";
 import { RootState } from "../../store";
 
 export type WithId<T> = T & { id: string };
@@ -48,6 +51,18 @@ const initialState: RecipeState = {
   status: "loading",
   error: null,
 };
+
+export const fetchRecipes = createAsyncThunk(
+  "recipe/fetchRecipes",
+  async (token: string) => {
+    const response = await httpService.get<WithId<IRecipe>[]>("recipe", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
+);
 
 const recipeSlice = createSlice({
   name: "recipe",

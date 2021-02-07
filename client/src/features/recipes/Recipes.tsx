@@ -5,9 +5,9 @@ import { IRecipe } from "../../../../server/src/models/Recipe";
 import crudService from "../../services/crud.service";
 import { useRecipeContext } from "./recipe-context";
 import { RecipeCard } from "./RecipeCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { selectRecipes as selectAllRecipes } from "./recipeSlice";
+import { fetchRecipes, selectRecipes as selectAllRecipes } from "./recipeSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +19,15 @@ const useStyles = makeStyles((theme) => ({
 export const Recipes = () => {
   const recipes = useSelector(selectAllRecipes);
   const styles = useStyles();
+  const { getAccessTokenSilently } = useAuth0();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const token = await getAccessTokenSilently();
+      dispatch(fetchRecipes(token));
+    })();
+  }, []);
 
   const cards = recipes.map((r) => (
     <Grid item xs={4} key={Math.random()}>
