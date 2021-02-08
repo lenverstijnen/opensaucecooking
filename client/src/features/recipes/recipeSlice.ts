@@ -12,6 +12,10 @@ import { RootState } from "../../store";
 
 export type WithId<T> = T & { _id: string };
 
+const recipeAdapter = createEntityAdapter<WithId<IRecipe>>({
+  selectId: (model) => model._id,
+});
+
 export function createRecipeModel(props: Partial<IRecipe>): IRecipe {
   return {
     name: "",
@@ -25,16 +29,14 @@ export function createRecipeModel(props: Partial<IRecipe>): IRecipe {
 }
 
 export interface RecipeState {
-  data: WithId<IRecipe>[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
-const initialState: RecipeState = {
-  data: [],
+const initialState = recipeAdapter.getInitialState<RecipeState>({
   status: "idle",
   error: null,
-};
+});
 
 export const fetchRecipes = createAsyncThunk(
   "recipe/fetchRecipes",
@@ -64,15 +66,11 @@ const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
-    recipeAdded(state, { payload }: PayloadAction<WithId<IRecipe>>) {
-      state.data.push(payload);
-    },
-
-    recipeUpdated(state, action: PayloadAction<WithId<Partial<IRecipe>>>) {
-      const item = state.data.find((r) => r._id === action.payload._id);
+    recipeUpdated(state, { payload }: PayloadAction<WithId<Partial<IRecipe>>>) {
+      const item = state.entities[payload._id];
       if (!item) throw Error("Post not found.");
 
-      Object.assign(item, action.payload);
+      Object.assign(item, payload);
     },
   },
   extraReducers: (builder) =>
@@ -82,28 +80,26 @@ const recipeSlice = createSlice({
       })
       .addCase(fetchRecipes.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.data = payload;
+        recipeAdapter.upsertMany(state, payload);
       })
       .addCase(fetchRecipes.rejected, (state) => {
         state.status = "failed";
       })
-      .addCase(addRecipe.fulfilled, (state, { payload }) => {
-        state.data.push(payload);
-      }),
+      .addCase(addRecipe.fulfilled, recipeAdapter.addOne),
 });
 
-export const { recipeAdded, recipeUpdated } = recipeSlice.actions;
+export const { recipeUpdated } = recipeSlice.actions;
 
 export default recipeSlice.reducer;
 
-export const selectRecipeSlice = (state: RootState) =>
-  state.recipe as RecipeState;
-export const selectRecipes = createSelector(
-  selectRecipeSlice,
-  (state) => state.data
-);
-export const selectRecipeById = (state: RootState, id: string | undefined) =>
-  state.recipe.data.find((r) => (r as WithId<IRecipe>)._id === id);
+export const {
+  selectAll: selectRecipes,
+  selectById: selectRecipeById,
+  selectIds: selectRecipeIds,
+} = recipeAdapter.getSelectors((state: RootState) => state.recipe);
+
+export const selectRecipeSlice = (state: RootState) => state.recipe;
+
 export const selectRecipeStatus = createSelector(
   selectRecipeSlice,
   (state) => state.status

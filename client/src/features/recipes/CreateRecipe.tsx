@@ -1,22 +1,21 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Container, TextField, Button } from "@material-ui/core";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
+import { Button, Container, TextField } from "@material-ui/core";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../store";
 import {
   addRecipe,
   createRecipeModel,
-  fetchRecipes,
-  recipeAdded,
   recipeUpdated,
   selectRecipeById,
 } from "./recipeSlice";
 
 export const CreateRecipe = () => {
   const { id } = useParams<{ id?: string }>();
-  const recipe = useSelector((state: RootState) => selectRecipeById(state, id));
+  const recipe = useSelector((state: RootState) =>
+    id ? selectRecipeById(state, id) : undefined
+  );
   const [name, setName] = useState(recipe?.name || "");
   const { goBack } = useHistory();
   const { getAccessTokenSilently, user } = useAuth0();

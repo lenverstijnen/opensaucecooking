@@ -4,7 +4,7 @@ import { RootState } from "../../store";
 import { selectRecipeById } from "./recipeSlice";
 
 export const Recipe = () => {
-  const { id } = useParams<{ id?: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const recipe = useSelector((state: RootState) => selectRecipeById(state, id));
 

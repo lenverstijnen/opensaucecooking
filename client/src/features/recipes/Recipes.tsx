@@ -6,6 +6,7 @@ import { Loading } from "../../auth/Loading";
 import { RecipeCard } from "./RecipeCard";
 import {
   fetchRecipes,
+  selectRecipeIds,
   selectRecipes as selectAllRecipes,
   selectRecipeStatus,
 } from "./recipeSlice";
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Recipes = () => {
-  const recipes = useSelector(selectAllRecipes);
+  const recipeIds = useSelector(selectRecipeIds);
   const recipeStatus = useSelector(selectRecipeStatus);
   const styles = useStyles();
   const { getAccessTokenSilently } = useAuth0();
@@ -33,9 +34,9 @@ export const Recipes = () => {
     })();
   }, []);
 
-  const cards = recipes.map((r) => (
-    <Grid item xs={4} key={Math.random()}>
-      <RecipeCard recipe={r}></RecipeCard>
+  const cards = recipeIds.map((recipeId) => (
+    <Grid item xs={4} key={recipeId}>
+      <RecipeCard recipeId={recipeId}></RecipeCard>
     </Grid>
   ));
 
