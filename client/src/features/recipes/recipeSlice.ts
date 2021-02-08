@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
@@ -95,7 +96,15 @@ export const { recipeAdded, recipeUpdated } = recipeSlice.actions;
 
 export default recipeSlice.reducer;
 
-export const selectRecipes = (state: RootState) => state.recipe.data;
+export const selectRecipeSlice = (state: RootState) =>
+  state.recipe as RecipeState;
+export const selectRecipes = createSelector(
+  selectRecipeSlice,
+  (state) => state.data
+);
 export const selectRecipeById = (state: RootState, id: string | undefined) =>
   state.recipe.data.find((r) => (r as WithId<IRecipe>)._id === id);
-export const selectRecipeStatus = (state: RootState) => state.recipe.status;
+export const selectRecipeStatus = createSelector(
+  selectRecipeSlice,
+  (state) => state.status
+);
