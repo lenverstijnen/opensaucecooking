@@ -9,29 +9,12 @@ import { IRecipe } from "../../../../server/src/models/Recipe";
 import httpService from "../../services/http.service";
 import { RootState } from "../../store";
 
-export type WithId<T> = T & { id: string };
+export type WithId<T> = T & { _id: string };
 
-// const mockRecipe: WithId<IRecipe> = {
-//   id: "abc",
-//   name: "Spaghetti Bolo",
-//   steps: [
-//     "Vlees in de Pan",
-//     "Wortel Ui Bakken",
-//     "Kei hard zwart laten worden",
-//     "Pan op de grond flikkeren",
-//     "Boos Weglopen",
-//   ],
-//   ingredients: [{ name: "Uien", quantity: 10, unit: "stuks" as any }],
-//   userId: "5f97e5973283b500174731c2" as any,
-//   media: ["foo", "baz"],
-//   rating: [],
-// };
-
-export function createRecipeModel(props: Partial<IRecipe>): WithId<IRecipe> {
+export function createRecipeModel(props: Partial<IRecipe>): IRecipe {
   return {
-    id: new Date().getTime().toString(),
     name: "",
-    steps: [],
+    steps: ["Zoiezo meer zout toevoegen"],
     ingredients: [],
     userId: "1" as any,
     media: [],
@@ -48,7 +31,7 @@ export interface RecipeState {
 
 const initialState: RecipeState = {
   data: [],
-  status: "loading",
+  status: "idle",
   error: null,
 };
 
@@ -64,27 +47,48 @@ export const fetchRecipes = createAsyncThunk(
   }
 );
 
+export const addRecipe = createAsyncThunk(
+  "recipe/addRecipe",
+  async ([token, recipe]: [string, IRecipe]) => {
+    const response = await httpService.post<WithId<IRecipe>>("recipe", recipe, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
+);
+
 const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
-    recipeAdded: {
-      reducer(state, { payload }: PayloadAction<WithId<IRecipe>>) {
-        state.data.push(payload);
-      },
-      prepare(data: Partial<IRecipe>) {
-        return {
-          payload: createRecipeModel(data),
-        };
-      },
+    recipeAdded(state, { payload }: PayloadAction<WithId<IRecipe>>) {
+      state.data.push(payload);
     },
+
     recipeUpdated(state, action: PayloadAction<WithId<Partial<IRecipe>>>) {
-      const item = state.data.find((r) => r.id === action.payload.id);
+      const item = state.data.find((r) => r._id === action.payload._id);
       if (!item) throw Error("Post not found.");
 
       Object.assign(item, action.payload);
     },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(fetchRecipes.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchRecipes.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.data = payload;
+      })
+      .addCase(fetchRecipes.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(addRecipe.fulfilled, (state, { payload }) => {
+        state.data.push(payload);
+      }),
 });
 
 export const { recipeAdded, recipeUpdated } = recipeSlice.actions;
@@ -93,4 +97,5 @@ export default recipeSlice.reducer;
 
 export const selectRecipes = (state: RootState) => state.recipe.data;
 export const selectRecipeById = (state: RootState, id: string | undefined) =>
-  state.recipe.data.find((r) => (r as WithId<IRecipe>).id === id);
+  state.recipe.data.find((r) => (r as WithId<IRecipe>)._id === id);
+export const selectRecipeStatus = (state: RootState) => state.recipe.status;

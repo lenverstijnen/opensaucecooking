@@ -1,13 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container, Grid, makeStyles } from "@material-ui/core";
 import { useEffect } from "react";
-import { IRecipe } from "../../../../server/src/models/Recipe";
-import crudService from "../../services/crud.service";
-import { useRecipeContext } from "./recipe-context";
-import { RecipeCard } from "./RecipeCard";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { fetchRecipes, selectRecipes as selectAllRecipes } from "./recipeSlice";
+import { Loading } from "../../auth/Loading";
+import { RecipeCard } from "./RecipeCard";
+import {
+  fetchRecipes,
+  selectRecipes as selectAllRecipes,
+  selectRecipeStatus,
+} from "./recipeSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,14 +19,17 @@ const useStyles = makeStyles((theme) => ({
 
 export const Recipes = () => {
   const recipes = useSelector(selectAllRecipes);
+  const recipeStatus = useSelector(selectRecipeStatus);
   const styles = useStyles();
   const { getAccessTokenSilently } = useAuth0();
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
-      const token = await getAccessTokenSilently();
-      dispatch(fetchRecipes(token));
+      if (recipeStatus === "idle") {
+        const token = await getAccessTokenSilently();
+        dispatch(fetchRecipes(token));
+      }
     })();
   }, []);
 
@@ -35,11 +39,13 @@ export const Recipes = () => {
     </Grid>
   ));
 
+  const cardGrid = (
+    <Grid container spacing={2} className={styles.root}>
+      {cards}
+    </Grid>
+  );
+
   return (
-    <Container>
-      <Grid container spacing={2} className={styles.root}>
-        {cards}
-      </Grid>
-    </Container>
+    <Container>{recipeStatus === "loading" ? <Loading /> : cardGrid}</Container>
   );
 };

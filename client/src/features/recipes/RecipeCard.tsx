@@ -37,10 +37,10 @@ export const RecipeCard = ({ recipe }: { recipe: WithId<IRecipe> }) => {
       <CardMedia image={image} className={classes.media}></CardMedia>
       <CardHeader title={recipe.name} subheader={subheader}></CardHeader>
       <CardActions disableSpacing>
-        <Button to={`/recipes/${recipe.id}`} component={Link}>
+        <Button to={`/recipes/${recipe._id}`} component={Link}>
           Bekijk
         </Button>
-        <IconButton component={Link} to={`/recipes/${recipe.id}/edit`}>
+        <IconButton component={Link} to={`/recipes/${recipe._id}/edit`}>
           <Create />
         </IconButton>
       </CardActions>

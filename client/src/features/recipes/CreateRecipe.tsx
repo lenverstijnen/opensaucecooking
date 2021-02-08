@@ -1,10 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container, TextField, Button } from "@material-ui/core";
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { RootState } from "../../store";
 import {
+  addRecipe,
   createRecipeModel,
   fetchRecipes,
   recipeAdded,
@@ -17,6 +19,7 @@ export const CreateRecipe = () => {
   const recipe = useSelector((state: RootState) => selectRecipeById(state, id));
   const [name, setName] = useState(recipe?.name || "");
   const { goBack } = useHistory();
+  const { getAccessTokenSilently, user } = useAuth0();
   const isNew = !recipe;
 
   const dispatch = useDispatch();
@@ -39,8 +42,11 @@ export const CreateRecipe = () => {
     goBack();
   };
 
-  const handleCreate = () => {
-    dispatch(recipeAdded({ name }));
+  const handleCreate = async () => {
+    const token = await getAccessTokenSilently();
+    const userId = user?.sub;
+    const newRecipe = createRecipeModel({ userId, name });
+    dispatch(addRecipe([token, newRecipe]));
   };
 
   const handleEdit = () => {
@@ -48,7 +54,7 @@ export const CreateRecipe = () => {
 
     dispatch(
       recipeUpdated({
-        id,
+        _id: id,
         name,
       })
     );
