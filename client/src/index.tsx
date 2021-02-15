@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthProvider";
 import { Provider } from "react-redux";
 import store from "./store";
+import { akitaDevtools } from "@datorama/akita";
 
 ReactDOM.render(
   <React.Fragment>
@@ -25,3 +26,5 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+akitaDevtools();

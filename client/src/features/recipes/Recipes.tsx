@@ -4,12 +4,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../../auth/Loading";
 import { RecipeCard } from "./RecipeCard";
+import { useObservable } from "@libreact/use-observable";
 import {
   fetchRecipes,
   selectRecipeIds,
   selectRecipes as selectAllRecipes,
   selectRecipeStatus,
 } from "./recipeSlice";
+import { recipeService } from "./state";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,20 +21,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Recipes = () => {
-  const recipeIds = useSelector(selectRecipeIds);
-  const recipeStatus = useSelector(selectRecipeStatus);
+  const [recipes] = useObservable(recipeService.all(), []);
+  const [loading] = useObservable(recipeService.query.selectLoading());
+  const recipeIds = recipes.map((x) => x._id);
   const styles = useStyles();
-  const { getAccessTokenSilently } = useAuth0();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      if (recipeStatus === "idle") {
-        const token = await getAccessTokenSilently();
-        dispatch(fetchRecipes(token));
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (recipeStatus === "idle") {
+  //       const token = await getAccessTokenSilently();
+  //       dispatch(fetchRecipes(token));
+  //     }
+  //   })();
+  // }, []);
 
   const cards = recipeIds.map((recipeId) => (
     <Grid item xs={4} key={recipeId}>
@@ -46,7 +47,5 @@ export const Recipes = () => {
     </Grid>
   );
 
-  return (
-    <Container>{recipeStatus === "loading" ? <Loading /> : cardGrid}</Container>
-  );
+  return <Container>{loading ? <Loading /> : cardGrid}</Container>;
 };

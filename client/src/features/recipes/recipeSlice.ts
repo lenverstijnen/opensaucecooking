@@ -63,7 +63,7 @@ export const addRecipe = createAsyncThunk(
 );
 
 const recipeSlice = createSlice({
-  name: "recipe",
+  name: "reciperedux",
   initialState,
   reducers: {
     recipeUpdated(state, { payload }: PayloadAction<WithId<Partial<IRecipe>>>) {
