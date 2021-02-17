@@ -11,7 +11,8 @@ import {
   selectRecipes as selectAllRecipes,
   selectRecipeStatus,
 } from "./recipeSlice";
-import { recipeService } from "./state";
+import { recipeService, useRecipes } from "./state";
+import { useEntityService } from "../../hooks/useEntity";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,19 +22,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Recipes = () => {
-  const [recipes] = useObservable(recipeService.all(), []);
+  // const [recipes] = useObservable(recipeService.all(), []);
   const [loading] = useObservable(recipeService.query.selectLoading());
-  const recipeIds = recipes.map((x) => x._id);
   const styles = useStyles();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (recipeStatus === "idle") {
-  //       const token = await getAccessTokenSilently();
-  //       dispatch(fetchRecipes(token));
-  //     }
-  //   })();
-  // }, []);
+  const { entities: recipes } = useRecipes();
+  const recipeIds = recipes.map((x) => x._id);
 
   const cards = recipeIds.map((recipeId) => (
     <Grid item xs={4} key={recipeId}>

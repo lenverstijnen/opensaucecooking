@@ -1,58 +1,72 @@
+import { AxiosRequestConfig } from "axios";
 import { ArrayOrT } from "../utils/array-or-t";
 import httpService from "./http.service";
 
-export type PartialWithId<T extends { _id: K }, K = string> = Partial<T> &
+export type PartialWithId<T extends { _id: string }> = Partial<T> &
   Pick<T, "_id">;
 
 export interface ICrudService<T extends { _id: string }> {
-  all(): Promise<T[]>;
-  find(id: string): Promise<T>;
-  create(body: T): Promise<T>;
-  update(body: ArrayOrT<PartialWithId<T>>): Promise<T | T[]>;
-  updateMany(body: PartialWithId<T>[]): Promise<T[]>;
-  remove(id: string): Promise<void>;
+  all(token: string): Promise<T[]>;
+  find(token: string, id: string): Promise<T>;
+  create(token: string, body: T): Promise<T>;
+  update(token: string, body: ArrayOrT<PartialWithId<T>>): Promise<T | T[]>;
+  updateMany(token: string, body: PartialWithId<T>[]): Promise<T[]>;
+  remove(token: string, id: string): Promise<void>;
 }
 
 function appendId(url: string, id: string) {
   return `${url}/${id}`;
 }
 
+function authHeader(token: string, config?: AxiosRequestConfig) {
+  return {
+    ...config,
+    headers: {
+      ...config?.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  };
+}
+
 export function createCrudService<T extends { _id: string }>(
   url: string
 ): ICrudService<T> {
-  const all = async () => {
-    const result = await httpService.get<T[]>(url);
+  const all = async (token: string) => {
+    const result = await httpService.get<T[]>(url, authHeader(token));
     return result.data;
   };
 
-  const find = async (id: string) => {
-    const result = await httpService.get<T>(appendId(url, id));
+  const find = async (token: string, id: string) => {
+    const result = await httpService.get<T>(
+      appendId(url, id),
+      authHeader(token)
+    );
     return result.data;
   };
 
-  const create = async (body: T) => {
-    const result = await httpService.post<T>(url, body);
+  const create = async (token: string, body: T) => {
+    const result = await httpService.post<T>(url, body, authHeader(token));
     return result.data;
   };
 
-  const updateMany = async (body: PartialWithId<T>[]) => {
-    const result = await httpService.put<T[]>(url, body);
+  const updateMany = async (token: string, body: PartialWithId<T>[]) => {
+    const result = await httpService.put<T[]>(url, body, authHeader(token));
     return result.data;
   };
 
-  const update = async (body: ArrayOrT<PartialWithId<T>>) => {
+  const update = async (token: string, body: ArrayOrT<PartialWithId<T>>) => {
     if (body instanceof Array) {
-      return updateMany(body);
+      return updateMany(token, body);
     }
 
     const updateUrl = appendId(url, body._id);
-    const result = await httpService.put<T>(updateUrl, body);
+    const result = await httpService.put<T>(updateUrl, body, authHeader(token));
     return result.data;
   };
 
-  const remove = async (id: string) => {
+  const remove = async (token: string, id: string) => {
     const removeUrl = appendId(url, id);
-    await httpService.delete<void>(removeUrl);
+    await httpService.delete<void>(removeUrl, authHeader(token));
   };
 
   return {

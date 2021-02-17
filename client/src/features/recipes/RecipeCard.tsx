@@ -14,6 +14,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import type { IRecipe } from "../../../../server/src/models/Recipe";
 import { RootState } from "../../store";
 import { selectRecipeById, WithId } from "./recipeSlice";
+import { useRecipe } from "./state";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,12 +29,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RecipeCard = ({ recipeId }: { recipeId: EntityId }) => {
+export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
   const classes = useStyles();
-  const recipe = useSelector((state: RootState) =>
-    selectRecipeById(state, recipeId)
-  );
-  if (!recipe) throw Error("Recipe not found.");
+  const recipe = useRecipe(recipeId);
+  if (!recipe) return <div>Not found</div>;
 
   const subheader = recipe.ingredients.map((i) => i.name).slice(0, 25);
   const image = "https://scx2.b-cdn.net/gfx/news/hires/2016/howcuttingdo.jpg";

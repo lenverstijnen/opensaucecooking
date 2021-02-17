@@ -1,11 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { EntityState, guid, ID } from "@datorama/akita";
-import { useEffect } from "react";
+import { guid } from "@datorama/akita";
 import { IRecipe } from "../../../../../server/src/models/Recipe";
+import { createUseEntityService, useEntity } from "../../../hooks/useEntity";
 import { createEntityService } from "../../../services/entity.service";
 
 export interface Recipe extends IRecipe {
-  _id: ID;
+  _id: string;
 }
 
 export function createRecipe(params: Partial<Recipe>): Recipe {
@@ -21,6 +20,13 @@ export function createRecipe(params: Partial<Recipe>): Recipe {
   };
 }
 
-export interface RecipeState extends EntityState<Recipe> {}
+export const recipeService = createEntityService<Recipe>("recipe");
+export const useRecipes = createUseEntityService(recipeService);
+export function useRecipe(id: string) {
+  return useEntity(recipeService, id);
+}
 
-export const recipeService = createEntityService<RecipeState>("recipe");
+// export function useRecipes() {
+//   const service = useEntityService(recipeService);
+//   return service;
+// }
