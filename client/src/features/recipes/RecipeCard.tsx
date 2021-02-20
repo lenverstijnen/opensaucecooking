@@ -4,9 +4,11 @@ import {
   CardHeader,
   CardMedia,
   makeStyles,
+  CardContent,
 } from "@material-ui/core";
 import { useRecipe } from "./state";
 import { RecipeCardActions } from "./RecipeCardActions";
+import { RecipeCardComments } from "./RecipeCardComments";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,9 @@ export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
       <CardHeader avatar={CardAvatar} title={user.fullName}></CardHeader>
       <CardMedia image={image} className={classes.media}></CardMedia>
       <RecipeCardActions recipe={recipe}></RecipeCardActions>
+      <CardContent>
+        <RecipeCardComments></RecipeCardComments>
+      </CardContent>
     </Card>
   );
 };
