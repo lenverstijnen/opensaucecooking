@@ -5,14 +5,19 @@ import { RecipeCard } from "./RecipeCard";
 import { recipeService, useRecipes } from "./state";
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    marginBottom: 16,
+  },
   root: {
     flexGrow: 1,
     paddingTop: 16,
   },
+  container: {
+    maxWidth: 600,
+  },
 }));
 
 export const Recipes = () => {
-  // const [recipes] = useObservable(recipeService.all(), []);
   const [loading] = useObservable(recipeService.query.selectLoading());
   const styles = useStyles();
 
@@ -23,5 +28,9 @@ export const Recipes = () => {
     <RecipeCard recipeId={recipeId}></RecipeCard>
   ));
 
-  return <Container>{loading ? <Loading /> : cards}</Container>;
+  return (
+    <Container className={styles.container}>
+      {loading ? <Loading /> : cards}
+    </Container>
+  );
 };
