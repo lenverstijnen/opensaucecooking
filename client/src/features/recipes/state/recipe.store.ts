@@ -21,6 +21,6 @@ export function createRecipe(params: Partial<Recipe>): Recipe {
 
 export const {
   entityService: recipeService,
-  useEntities: useRecipies,
+  useEntities: useRecipes,
   useEntity: useRecipe,
 } = setupEntity("recipe");
