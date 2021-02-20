@@ -6,12 +6,16 @@ import reportWebVitals from "./reportWebVitals"
 import { BrowserRouter } from "react-router-dom"
 import { AuthProvider } from "./auth/AuthProvider"
 import { akitaDevtools } from "@datorama/akita"
+import { ThemeProvider } from "@material-ui/core"
+import { theme } from "./themesAndStyles/theme"
 
 ReactDOM.render(
   <React.Fragment>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.Fragment>,
