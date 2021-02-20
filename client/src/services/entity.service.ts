@@ -3,8 +3,6 @@ import {
   createEntityStore,
   EntityState,
   EntityStore,
-  getEntityType,
-  getIDType,
   QueryEntity,
 } from "@datorama/akita";
 import { from, Observable } from "rxjs";
