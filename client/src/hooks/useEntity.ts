@@ -1,72 +1,73 @@
-import { useEffect, useState } from "react";
-import { EntityService } from "../services/entity.service";
+import { useEffect, useState } from "react"
+import { EntityService } from "../services/entity.service"
 
 export function useEntities<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
-  const [entities, setEntities] = useState<T[]>([]);
+  const [entities, setEntities] = useState<T[]>([])
 
   // TODO: refactor in seperate hook
   useEffect(() => {
-    const subscription = getEntities();
+    const subscription = getEntities()
 
     return () => {
       subscription.then((sub) => {
-        sub.unsubscribe();
-      });
-    };
-  }, []);
+        sub.unsubscribe()
+      })
+    }
+  }, [])
 
   const getEntities = async () => {
     return entityService.all().subscribe((data) => {
-      setEntities(data);
-    });
-  };
+      setEntities(data)
+    })
+  }
 
   return {
     entities,
     ...entityService,
-  };
+  }
 }
 
 export function useEntity<T extends { _id: string }>(
   entityService: EntityService<T>,
   id: string
 ) {
-  const initialValue = entityService.query.getEntity(id);
-  const [entity, setEntity] = useState(initialValue);
+  const initialValue = entityService.query.getEntity(id)
+  const [entity, setEntity] = useState(initialValue)
 
   useEffect(() => {
-    const subscription = selectEntity();
+    const subscription = selectEntity()
 
     return () => {
       subscription.then((sub) => {
-        sub.unsubscribe();
-      });
-    };
-  }, []);
+        sub.unsubscribe()
+      })
+    }
+  }, [])
 
   const selectEntity = async () => {
     return entityService.find(id).subscribe((entity) => {
-      setEntity(entity);
-    });
-  };
+      setEntity(entity)
+    })
+  }
 
-  return entity;
+  return entity
 }
 
 export function createUseEntities<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   return function () {
-    return useEntities<T>(entityService);
-  };
+    return useEntities<T>(entityService)
+  }
 }
 
 export function createUseEntity<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
-  return function (id: string) {
-    return useEntity(entityService, id);
-  };
+  return function (id: string | undefined) {
+    if (!id) return
+    return useEntity(entityService, id)
+  }
 }
