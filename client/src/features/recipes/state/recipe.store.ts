@@ -23,4 +23,4 @@ export const {
   entityService: recipeService,
   useEntities: useRecipes,
   useEntity: useRecipe,
-} = setupEntity("recipe");
+} = setupEntity<Recipe>("recipe");

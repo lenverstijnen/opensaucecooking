@@ -1,9 +1,9 @@
-import { createUseEntities } from "../hooks/useEntity";
+import { createUseEntities, createUseEntity } from "../hooks/useEntity";
 import { createEntityService, EntityService } from "./entity.service";
 
-export function setupEntity(name: string) {
-  const entityService = createEntityService(name);
-  const hooks = setupEntityHooks(entityService);
+export function setupEntity<T extends { _id: string }>(name: string) {
+  const entityService = createEntityService<T>(name);
+  const hooks = setupEntityHooks<T>(entityService);
 
   return {
     entityService,
@@ -14,8 +14,8 @@ export function setupEntity(name: string) {
 export function setupEntityHooks<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
-  const useEntities = createUseEntities(entityService);
-  const useEntity = createUseEntities(entityService);
+  const useEntities = createUseEntities<T>(entityService);
+  const useEntity = createUseEntity<T>(entityService);
 
   return {
     useEntities,
