@@ -1,16 +1,12 @@
 import {
-  Button,
+  Avatar,
   Card,
-  CardActions,
   CardHeader,
   CardMedia,
-  IconButton,
   makeStyles,
-  Avatar,
 } from "@material-ui/core";
-import { Create } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 import { useRecipe } from "./state";
+import { RecipeCardActions } from "./RecipeCardActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 16,
   },
   media: {
-    height: 140,
+    paddingTop: "75%",
   },
   link: {
     textDecoration: "none",
@@ -32,7 +28,6 @@ export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
   const recipe = useRecipe(recipeId);
   if (!recipe) return <div>Not found</div>;
 
-  const subheader = recipe.ingredients.map((i) => i.name).slice(0, 25);
   const image = "https://scx2.b-cdn.net/gfx/news/hires/2016/howcuttingdo.jpg";
 
   const user = {
@@ -51,14 +46,7 @@ export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
     <Card className={classes.root}>
       <CardHeader avatar={CardAvatar} title={user.fullName}></CardHeader>
       <CardMedia image={image} className={classes.media}></CardMedia>
-      <CardActions disableSpacing>
-        <Button to={`/recipes/${recipe._id}`} component={Link}>
-          Bekijk
-        </Button>
-        <IconButton component={Link} to={`/recipes/${recipe._id}/edit`}>
-          <Create />
-        </IconButton>
-      </CardActions>
+      <RecipeCardActions recipe={recipe}></RecipeCardActions>
     </Card>
   );
 };
