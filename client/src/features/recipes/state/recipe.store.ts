@@ -6,6 +6,7 @@ import {
   useEntity,
 } from "../../../hooks/useEntity";
 import { createEntityService } from "../../../services/entity.service";
+import { setupEntity } from "../../../services/setupEntity";
 
 export interface Recipe extends IRecipe {
   _id: string;
@@ -24,11 +25,8 @@ export function createRecipe(params: Partial<Recipe>): Recipe {
   };
 }
 
-export const recipeService = createEntityService<Recipe>("recipe");
-export const useRecipes = createUseEntities(recipeService);
-export const useRecipe = createUseEntity(recipeService);
-
-// export function useRecipes() {
-//   const service = useEntityService(recipeService);
-//   return service;
-// }
+export const {
+  entityService: recipeService,
+  useEntities: useRecipies,
+  useEntity: useRecipe,
+} = setupEntity("recipe");

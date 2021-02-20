@@ -11,15 +11,14 @@ import { ArrayOrT } from "../utils/array-or-t";
 import { createCrudService, ICrudService, PartialWithId } from "./crud.service";
 
 export interface EntityServiceMethods<T extends { _id: string }> {
-  all(token: string, opts?: EntityServiceRequestOptions): Observable<T[]>;
+  all(opts?: EntityServiceRequestOptions): Observable<T[]>;
   find(
-    token: string,
     id: string,
     opts?: EntityServiceRequestOptions
   ): Observable<T | undefined>;
-  create(token: string, item: ArrayOrT<PartialWithId<T>>): Promise<void>;
-  update(token: string, item: ArrayOrT<PartialWithId<T>>): Promise<void>;
-  remove(token: string, id: string): Promise<void>;
+  create(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
+  update(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
+  remove(id: string): Promise<void>;
 }
 
 export interface EntityService<T extends { _id: string }>
@@ -55,54 +54,51 @@ function createEntityServiceMethods<T extends { _id: string }>(
   store: EntityStore<EntityState<T, string>>,
   query: QueryEntity<EntityState<T, string>>
 ) {
-  const allRequest = async (token: string) => {
-    const hasCache = store._cache().value;
+  const allRequest = async () => {
+    const hasCache = false || store._cache().value;
     if (hasCache) return;
 
-    const result = await crudService.all(token);
+    const result = await crudService.all();
     store.set(result);
   };
 
-  const all = (
-    token: string,
-    { refreshCache }: EntityServiceRequestOptions = {}
-  ) => {
+  const all = ({ refreshCache }: EntityServiceRequestOptions = {}) => {
+    store.setHasCache(false);
     if (refreshCache) store.setHasCache(false);
-    const req = allRequest(token);
+    const req = allRequest();
 
     return from(req).pipe(switchMap(() => query.selectAll()));
   };
 
-  const findRequest = async (token: string, id: string) => {
-    const result = await crudService.find(token, id);
+  const findRequest = async (id: string) => {
+    const result = await crudService.find(id);
     store.upsert(id, result);
     return result;
   };
 
   const find = (
-    token: string,
     id: string,
     { refreshCache }: EntityServiceRequestOptions = {}
   ) => {
     const makeApiRequest = refreshCache || !query.hasEntity(id);
-    const promise = makeApiRequest ? findRequest(token, id) : Promise.resolve();
+    const promise = makeApiRequest ? findRequest(id) : Promise.resolve();
 
     return from(promise).pipe(switchMap(() => query.selectEntity(id)));
   };
 
-  const create = async (token: string, item: T) => {
-    const result = await crudService.create(token, item);
+  const create = async (item: T) => {
+    const result = await crudService.create(item);
     store.add(result);
   };
 
-  const update = async (token: string, item: ArrayOrT<PartialWithId<T>>) => {
-    const result = await crudService.update(token, item);
+  const update = async (item: ArrayOrT<PartialWithId<T>>) => {
+    const result = await crudService.update(item);
     const resultArray = Array.isArray(result) ? result : [result];
     store.upsertMany(resultArray);
   };
 
-  const remove = async (token: string, id: string) => {
-    await crudService.remove(token, id);
+  const remove = async (id: string) => {
+    await crudService.remove(id);
     store.remove(id);
   };
 

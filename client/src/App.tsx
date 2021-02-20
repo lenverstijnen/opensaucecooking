@@ -1,14 +1,16 @@
 import { Route, Switch } from "react-router-dom";
-import "./App.css";
-import { Home } from "./home/Home";
-import { Profile } from "./profile/Profile";
-import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { AppHeader } from "./app-header/AppHeader";
+import "./App.css";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { CreateRecipe } from "./features/recipes/CreateRecipe";
 import { Recipe } from "./features/recipes/Recipe";
 import { Recipes } from "./features/recipes/Recipes";
+import { useToken } from "./hooks/useToken";
+import { Profile } from "./profile/Profile";
 
 export default function App() {
+  useToken();
+
   return (
     <div>
       <AppHeader />

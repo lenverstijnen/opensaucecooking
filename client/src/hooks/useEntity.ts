@@ -1,13 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { EntityService } from "../services/entity.service";
 
-export function useEntityService<T extends { _id: string }>(
+export function useEntities<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   const [entities, setEntities] = useState<T[]>([]);
-  const [entityIds, setEntityIds] = useState<string[]>();
-  const { getAccessTokenSilently } = useAuth0();
 
   // TODO: refactor in seperate hook
   useEffect(() => {
@@ -21,8 +18,7 @@ export function useEntityService<T extends { _id: string }>(
   }, []);
 
   const getEntities = async () => {
-    const token = await getAccessTokenSilently();
-    return entityService.all(token).subscribe((data) => {
+    return entityService.all().subscribe((data) => {
       setEntities(data);
     });
   };
@@ -39,7 +35,6 @@ export function useEntity<T extends { _id: string }>(
 ) {
   const initialValue = entityService.query.getEntity(id);
   const [entity, setEntity] = useState(initialValue);
-  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const subscription = selectEntity();
@@ -52,8 +47,7 @@ export function useEntity<T extends { _id: string }>(
   }, []);
 
   const selectEntity = async () => {
-    const token = await getAccessTokenSilently();
-    return entityService.find(token, id).subscribe((entity) => {
+    return entityService.find(id).subscribe((entity) => {
       setEntity(entity);
     });
   };
@@ -65,7 +59,7 @@ export function createUseEntities<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   return function () {
-    return useEntityService<T>(entityService);
+    return useEntities<T>(entityService);
   };
 }
 
