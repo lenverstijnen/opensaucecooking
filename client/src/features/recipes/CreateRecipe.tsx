@@ -8,7 +8,15 @@ import AlignRight from "../../common/AlignRight"
 
 const useStyles = makeStyles((theme) => ({
   btn: {
-    margin: 10,
+    margin: "10px 0",
+  },
+  images: {
+    display: "flex",
+
+    flexWrap: "wrap",
+  },
+  tumbnail: {
+    margin: 5,
   },
 }))
 
@@ -44,6 +52,7 @@ export const CreateRecipe = () => {
   const { id } = useParams<{ id?: string }>()
   const recipe = useRecipe(id)
   const [state, setState] = useState(initialState)
+  const [images, setImages] = useState<File[]>([])
   const [errors, setErrors] = useState<{ [k: string]: any }>({})
   const isNew = !recipe
 
@@ -102,7 +111,7 @@ export const CreateRecipe = () => {
 
         <h3>Ingredients</h3>
         {state.ingredients.map((ingredient, i) => (
-          <>
+          <div key={i}>
             <Typography color="primary" variant="caption">
               Ingredient {i + 1}
             </Typography>
@@ -127,7 +136,7 @@ export const CreateRecipe = () => {
               value={state.ingredients[i].unit}
               error={errors.ingredients?.[i]?.unit}
             />
-          </>
+          </div>
         ))}
         <AlignRight>
           <Button
@@ -142,6 +151,7 @@ export const CreateRecipe = () => {
         <h3>Steps</h3>
         {state.steps.map((step, i) => (
           <Input
+            key={i}
             name={`Step ${i + 1}`}
             onChange={handleChange}
             label={`Step ${i + 1}`}
@@ -174,8 +184,28 @@ export const CreateRecipe = () => {
           component="label"
         >
           Upload Images
-          <input type="file" multiple hidden />
+          <input
+            onChange={(e) => setImages(Array.from(e.target.files!))}
+            accept="image/*"
+            type="file"
+            multiple
+            hidden
+          />
         </Button>
+        {images && (
+          <div className={classes.images}>
+            {images.map((file, i) => (
+              <img
+                className={classes.tumbnail}
+                key={i}
+                src={URL.createObjectURL(file)}
+                alt="foo"
+                width={100}
+                height={100}
+              />
+            ))}
+          </div>
+        )}
 
         <Button
           className={classes.btn}
