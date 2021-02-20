@@ -1,8 +1,7 @@
-import { useObservable } from "@libreact/use-observable";
-import { Container, Grid, makeStyles } from "@material-ui/core";
+import { Container, makeStyles } from "@material-ui/core";
 import { Loading } from "../../auth/Loading";
 import { RecipeCard } from "./RecipeCard";
-import { recipeService, useRecipes } from "./state";
+import { useRecipes } from "./state";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -18,10 +17,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Recipes = () => {
-  const [loading] = useObservable(recipeService.query.selectLoading());
   const styles = useStyles();
 
-  const { entities: recipes } = useRecipes();
+  const { entities: recipes, loading } = useRecipes();
   const recipeIds = recipes.map((x) => x._id);
 
   const cards = recipeIds.map((recipeId) => (

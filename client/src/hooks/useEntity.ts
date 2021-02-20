@@ -5,9 +5,11 @@ export function useEntities<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   const [entities] = useObservable(entityService.all(), []);
+  const [loading] = useObservable(entityService.query.selectLoading());
 
   return {
     entities,
+    loading,
     ...entityService,
   };
 }
