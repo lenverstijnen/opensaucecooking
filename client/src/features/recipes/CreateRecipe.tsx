@@ -1,19 +1,58 @@
-import { Button, Container, TextField } from "@material-ui/core"
+import { Button, Container, Typography } from "@material-ui/core"
 import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import { createRecipe, recipeService, useRecipe } from "./state"
+import Input from "../../common/Input"
+import { Add } from "@material-ui/icons"
+import AlignRight from "../../common/AlignRight"
+
+export enum UnitEnum {
+  gram = "gram",
+  liter = "liter",
+  stuks = "stuks",
+}
+
+export interface IIngredient {
+  name: string
+  quantity: number | string
+  unit: UnitEnum
+}
+
+interface IState {
+  name: string
+  ingredients: IIngredient[]
+  steps: string[]
+}
+
+const initialIngredient = { name: "", quantity: "", unit: UnitEnum.gram }
+
+const initialState: IState = {
+  name: "",
+  ingredients: [initialIngredient],
+  steps: [""],
+}
 
 export const CreateRecipe = () => {
+  const { goBack } = useHistory()
   const { id } = useParams<{ id?: string }>()
   const recipe = useRecipe(id)
-  const [name, setName] = useState(recipe?.name || "")
-  const { goBack } = useHistory()
+  const [state, setState] = useState(initialState)
+  const [errors, setErrors] = useState<{ [k: string]: any }>({})
   const isNew = !recipe
 
+  const handleChange = () => {}
+
+  const addIngredient = () => {
+    setState({
+      ...state,
+      ingredients: [...state.ingredients, initialIngredient],
+    })
+  }
+
+  const addStep = () => setState({ ...state, steps: [...state.steps, ""] })
+
   const validateForm = () => {
-    if (!name) {
-      throw new Error("Form is invalid")
-    }
+    // TODO: validate input
   }
 
   const handleSave = () => {
@@ -29,7 +68,7 @@ export const CreateRecipe = () => {
   }
 
   const handleCreate = async () => {
-    const newRecipe = createRecipe({ name })
+    const newRecipe = createRecipe({ ...state })
     recipeService.create(newRecipe)
   }
 
@@ -38,7 +77,7 @@ export const CreateRecipe = () => {
 
     recipeService.update({
       _id: id,
-      name,
+      name: state.name,
     })
   }
 
@@ -46,15 +85,81 @@ export const CreateRecipe = () => {
     <Container>
       <h2>{isNew ? "Create Recipe" : "Edit Recipe"}</h2>
       <form noValidate autoComplete="off">
-        <TextField
+        <Input
+          name="name"
+          onChange={handleChange}
           label="Name"
-          variant="outlined"
-          fullWidth
-          margin="dense"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={state.name}
+          error={errors.name}
         />
-        <Button variant="contained" color="primary" onClick={handleSave}>
+
+        <h3>Ingredients</h3>
+        {state.ingredients.map((ingredient, i) => (
+          <>
+            <Typography color="secondary" variant="caption">
+              Ingredient {i + 1}
+            </Typography>
+            <Input
+              name="name"
+              onChange={handleChange}
+              label="Ingredient name"
+              value={state.ingredients[i].name}
+              error={state.ingredients?.[i]?.name}
+            />
+            <Input
+              name="quantity"
+              onChange={handleChange}
+              label="Quantity"
+              value={state.ingredients[i].quantity as string}
+              error={errors.ingredients?.[i]?.quantity}
+            />
+            <Input
+              name="unit"
+              onChange={handleChange}
+              label="Unit"
+              value={state.ingredients[i].unit}
+              error={errors.ingredients?.[i]?.unit}
+            />
+          </>
+        ))}
+        <AlignRight>
+          <Button
+            onClick={addIngredient}
+            color="secondary"
+            size="small"
+            startIcon={<Add />}
+          >
+            Add ingredient
+          </Button>
+        </AlignRight>
+
+        <h3>Steps</h3>
+        {state.steps.map((step, i) => (
+          <Input
+            name={`Step ${i + 1}`}
+            onChange={handleChange}
+            label={`Step ${i + 1}`}
+            value={state.steps[i]}
+            error={errors.steps?.[i]}
+          />
+        ))}
+        <AlignRight>
+          <Button
+            onClick={addStep}
+            color="secondary"
+            size="small"
+            startIcon={<Add />}
+          >
+            Add step
+          </Button>
+        </AlignRight>
+
+        <Button
+          // className={classes.btn}
+          variant="contained"
+          color="primary"
+          onClick={handleSave}
+        >
           Save
         </Button>
       </form>
