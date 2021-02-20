@@ -20,16 +20,8 @@ export const Recipes = () => {
   const recipeIds = recipes.map((x) => x._id);
 
   const cards = recipeIds.map((recipeId) => (
-    <Grid item xs={4} key={recipeId}>
-      <RecipeCard recipeId={recipeId}></RecipeCard>
-    </Grid>
+    <RecipeCard recipeId={recipeId}></RecipeCard>
   ));
 
-  const cardGrid = (
-    <Grid container spacing={2} className={styles.root}>
-      {cards}
-    </Grid>
-  );
-
-  return <Container>{loading ? <Loading /> : cardGrid}</Container>;
+  return <Container>{loading ? <Loading /> : cards}</Container>;
 };
