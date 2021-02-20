@@ -1,5 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
-import {} from "@auth0/auth0-react";
+import axios from "axios";
 
 const httpService = axios.create({
   withCredentials: true,

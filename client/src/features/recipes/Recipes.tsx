@@ -1,18 +1,8 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useObservable } from "@libreact/use-observable";
 import { Container, Grid, makeStyles } from "@material-ui/core";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../../auth/Loading";
 import { RecipeCard } from "./RecipeCard";
-import { useObservable } from "@libreact/use-observable";
-import {
-  fetchRecipes,
-  selectRecipeIds,
-  selectRecipes as selectAllRecipes,
-  selectRecipeStatus,
-} from "./recipeSlice";
 import { recipeService, useRecipes } from "./state";
-import { useEntityService } from "../../hooks/useEntity";
 
 const useStyles = makeStyles((theme) => ({
   root: {

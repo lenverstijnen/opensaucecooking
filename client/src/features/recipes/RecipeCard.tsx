@@ -5,15 +5,10 @@ import {
   CardHeader,
   CardMedia,
   IconButton,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 import { Create } from "@material-ui/icons";
-import { EntityId } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { Link, useRouteMatch } from "react-router-dom";
-import type { IRecipe } from "../../../../server/src/models/Recipe";
-import { RootState } from "../../store";
-import { selectRecipeById, WithId } from "./recipeSlice";
+import { Link } from "react-router-dom";
 import { useRecipe } from "./state";
 
 const useStyles = makeStyles((theme) => ({
