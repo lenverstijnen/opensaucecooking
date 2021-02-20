@@ -29,7 +29,7 @@ const initialIngredient = { name: "", quantity: "", unit: UnitEnum.gram }
 const initialState: IState = {
   name: "",
   ingredients: [initialIngredient],
-  steps: [],
+  steps: [""],
 }
 
 export const CreateRecipe = () => {
@@ -48,6 +48,8 @@ export const CreateRecipe = () => {
       ingredients: [...state.ingredients, initialIngredient],
     })
   }
+
+  const addStep = () => setState({ ...state, steps: [...state.steps, ""] })
 
   const validateForm = () => {
     // TODO: validate input
@@ -100,7 +102,7 @@ export const CreateRecipe = () => {
             <Input
               name="name"
               onChange={handleChange}
-              label="Ingredient mame"
+              label="Ingredient name"
               value={state.ingredients[i].name}
               error={state.ingredients?.[i]?.name}
             />
@@ -132,6 +134,25 @@ export const CreateRecipe = () => {
         </AlignRight>
 
         <h3>Steps</h3>
+        {state.steps.map((step, i) => (
+          <Input
+            name={`Step ${i + 1}`}
+            onChange={handleChange}
+            label={`Step ${i + 1}`}
+            value={state.steps[i]}
+            error={errors.steps?.[i]}
+          />
+        ))}
+        <AlignRight>
+          <Button
+            onClick={addStep}
+            color="secondary"
+            size="small"
+            startIcon={<Add />}
+          >
+            Add step
+          </Button>
+        </AlignRight>
 
         <Button
           // className={classes.btn}
