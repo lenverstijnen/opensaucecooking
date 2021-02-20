@@ -1,10 +1,16 @@
-import { Button, Container, Typography } from "@material-ui/core"
+import { Button, Container, Typography, makeStyles } from "@material-ui/core"
 import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import { createRecipe, recipeService, useRecipe } from "./state"
 import Input from "../../common/Input"
-import { Add } from "@material-ui/icons"
+import { Add, AddAPhotoTwoTone } from "@material-ui/icons"
 import AlignRight from "../../common/AlignRight"
+
+const useStyles = makeStyles((theme) => ({
+  btn: {
+    margin: 10,
+  },
+}))
 
 export enum UnitEnum {
   gram = "gram",
@@ -33,6 +39,7 @@ const initialState: IState = {
 }
 
 export const CreateRecipe = () => {
+  const classes = useStyles()
   const { goBack } = useHistory()
   const { id } = useParams<{ id?: string }>()
   const recipe = useRecipe(id)
@@ -96,7 +103,7 @@ export const CreateRecipe = () => {
         <h3>Ingredients</h3>
         {state.ingredients.map((ingredient, i) => (
           <>
-            <Typography color="secondary" variant="caption">
+            <Typography color="primary" variant="caption">
               Ingredient {i + 1}
             </Typography>
             <Input
@@ -132,7 +139,6 @@ export const CreateRecipe = () => {
             Add ingredient
           </Button>
         </AlignRight>
-
         <h3>Steps</h3>
         {state.steps.map((step, i) => (
           <Input
@@ -153,9 +159,27 @@ export const CreateRecipe = () => {
             Add step
           </Button>
         </AlignRight>
+        <input
+          accept="image/*"
+          style={{ display: "none" }}
+          id="raised-button-file"
+          multiple
+          type="file"
+        />
+        <Button
+          endIcon={<AddAPhotoTwoTone />}
+          className={classes.btn}
+          fullWidth
+          color="primary"
+          component="label"
+        >
+          Upload Images
+          <input type="file" multiple hidden />
+        </Button>
 
         <Button
-          // className={classes.btn}
+          className={classes.btn}
+          fullWidth
           variant="contained"
           color="primary"
           onClick={handleSave}

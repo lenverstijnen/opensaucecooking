@@ -19,6 +19,7 @@ export interface IRating {
 }
 export interface IRecipe {
   name: string
+
   steps: string[]
   ingredients: IIngredient[]
   userId: ObjectId
