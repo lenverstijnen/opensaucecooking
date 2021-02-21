@@ -6,6 +6,7 @@ import {
   makeStyles,
   CardActions,
   CardContent,
+  Typography,
 } from "@material-ui/core";
 import { useRecipe } from "./state";
 import { RecipeCardActions } from "./RecipeCardActions";
@@ -24,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   avatar: {},
+  actions: {
+    paddingBottom: 0,
+  },
+  body: {
+    paddingTop: 0,
+  },
 }));
 
 export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
@@ -49,8 +56,14 @@ export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
     <Card className={classes.root}>
       <CardHeader avatar={CardAvatar} title={user.fullName}></CardHeader>
       <CardMedia image={image} className={classes.media}></CardMedia>
-      <RecipeCardActions recipe={recipe}></RecipeCardActions>
-      <CardContent>
+      <RecipeCardActions
+        recipe={recipe}
+        className={classes.actions}
+      ></RecipeCardActions>
+      <CardContent className={classes.body}>
+        <Typography variant="h6">{recipe.name}</Typography>
+        <Typography paragraph>This will be a description.</Typography>
+
         <RecipeCardComments></RecipeCardComments>
       </CardContent>
     </Card>

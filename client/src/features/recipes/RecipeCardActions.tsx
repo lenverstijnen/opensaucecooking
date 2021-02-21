@@ -5,9 +5,14 @@ import { FavoriteButton } from "../../common/FavoriteButton";
 import { LikeButton } from "../../common/LikeButton";
 import { Recipe } from "./state";
 
-export const RecipeCardActions = ({ recipe }: { recipe: Recipe }) => {
+interface Props {
+  recipe: Recipe;
+  className?: string;
+}
+
+export const RecipeCardActions: React.FC<Props> = ({ recipe, className }) => {
   return (
-    <CardActions disableSpacing>
+    <CardActions disableSpacing className={className}>
       <Box marginRight="auto">
         <LikeButton />
         <CommentButton />
