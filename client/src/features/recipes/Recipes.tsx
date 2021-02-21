@@ -27,7 +27,7 @@ export const Recipes = () => {
   ));
 
   return (
-    <Container className={styles.container}>
+    <Container disableGutters maxWidth="sm">
       {loading ? <Loading /> : cards}
     </Container>
   );

@@ -4,6 +4,7 @@ import {
   CardHeader,
   CardMedia,
   makeStyles,
+  CardActions,
   CardContent,
 } from "@material-ui/core";
 import { useRecipe } from "./state";
