@@ -1,7 +1,9 @@
 import { Typography } from "@material-ui/core"
 import React from "react"
-import AddButton from "../../../common/AddButton"
-import Input from "../../../common/Input"
+import { UnitEnum } from "../../../common/enums/UnitEnum"
+import AddButton from "../../../common/formComponents/AddButton"
+import Input from "../../../common/formComponents/Input"
+import Select from "../../../common/formComponents/Select"
 import { ICreateRecipeState, initialIngredient } from "./CreateRecipe"
 
 interface Props {
@@ -10,6 +12,12 @@ interface Props {
   handleChange: () => void
   setState: React.Dispatch<React.SetStateAction<ICreateRecipeState>>
 }
+
+const unitItems = [
+  { value: UnitEnum.gram, label: "Gram" },
+  { value: UnitEnum.liter, label: "Liter" },
+  { value: UnitEnum.pieces, label: "Pieces" },
+]
 
 const AddIngredients: React.FC<Props> = ({
   setState,
@@ -46,8 +54,9 @@ const AddIngredients: React.FC<Props> = ({
             value={state.ingredients[i].quantity as string}
             error={errors.ingredients?.[i]?.quantity}
           />
-          <Input
-            name="unit"
+          <Select
+            noEmpty
+            items={unitItems}
             onChange={handleChange}
             label="Unit"
             value={state.ingredients[i].unit}

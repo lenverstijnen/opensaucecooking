@@ -1,6 +1,6 @@
 import React from "react"
-import AddButton from "../../../common/AddButton"
-import Input from "../../../common/Input"
+import AddButton from "../../../common/formComponents/AddButton"
+import Input from "../../../common/formComponents/Input"
 import { ICreateRecipeState } from "./CreateRecipe"
 
 interface Props {

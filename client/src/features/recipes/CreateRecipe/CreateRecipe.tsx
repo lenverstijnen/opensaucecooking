@@ -1,7 +1,8 @@
 import { Button, Container, makeStyles } from "@material-ui/core"
 import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
-import Input from "../../../common/Input"
+import { UnitEnum } from "../../../common/enums/UnitEnum"
+import Input from "../../../common/formComponents/Input"
 import { createRecipe, recipeService, useRecipe } from "../state"
 import AddIngredients from "./AddIngredients"
 import AddPicture from "./AddPicture"
@@ -12,12 +13,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 0",
   },
 }))
-
-export enum UnitEnum {
-  gram = "gram",
-  liter = "liter",
-  stuks = "stuks",
-}
 
 export interface IIngredient {
   name: string
@@ -52,6 +47,7 @@ export const CreateRecipe = () => {
 
   const validateForm = () => {
     // TODO: validate input
+    setErrors({})
   }
 
   const handleSave = () => {
@@ -67,8 +63,8 @@ export const CreateRecipe = () => {
   }
 
   const handleCreate = async () => {
-    const newRecipe = createRecipe({ ...state })
-    recipeService.create(newRecipe)
+    // const newRecipe = createRecipe({ ...state })
+    // recipeService.create(newRecipe)
   }
 
   const handleEdit = () => {
