@@ -15,8 +15,8 @@ router.put("/:id", [validateId, validateRecipe], recipe.update);
 
 router.delete("/:id", [validateId], recipe.delete);
 
-router.post(":id/like/:userId", recipe.like);
+router.post("/:id/like/:userId", recipe.like);
 
-router.post(":id/unlike/:userId", recipe.unlike);
+router.post("/:id/unlike/:userId", recipe.unlike);
 
 export default router;

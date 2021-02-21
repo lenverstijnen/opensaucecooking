@@ -16,6 +16,7 @@ export function createRecipe(params: Partial<Recipe>): Recipe {
     userId: "1" as any,
     media: [],
     rating: [],
+    likes: [],
     ...params,
   };
 }

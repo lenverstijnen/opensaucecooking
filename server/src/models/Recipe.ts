@@ -25,6 +25,7 @@ export interface IRecipe {
   userId: ObjectId;
   media: string[];
   rating: IRating[];
+  likes: string[];
 }
 
 const recipeSchema = new Schema(
@@ -64,6 +65,7 @@ const recipeSchema = new Schema(
         },
       },
     ],
+    likes: [String],
   },
   { versionKey: false }
 );

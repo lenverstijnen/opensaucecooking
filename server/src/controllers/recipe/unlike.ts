@@ -11,5 +11,5 @@ export const unlike: RequestHandler<RequestParams> = async (req, res) => {
   // TODO: add to token with middleware
   const userId = req.params.userId;
   const recipe = await recipeService.unlike(id, userId);
-  return recipe;
+  res.send(recipe);
 };

@@ -12,10 +12,10 @@ const update = (id: string, updated: IRecipe) =>
   Recipe.findByIdAndUpdate(id, updated, { new: true });
 
 const like = (id: string, userId: string) =>
-  Recipe.findByIdAndUpdate(id, { $addToSet: { likes: userId } });
+  Recipe.findByIdAndUpdate(id, { $addToSet: { likes: userId } }, { new: true });
 
 const unlike = (id: string, userId: string) =>
-  Recipe.findByIdAndUpdate(id, { $pull: { likes: userId } });
+  Recipe.findByIdAndUpdate(id, { $pull: { likes: userId } }, { new: true });
 
 export default {
   create,

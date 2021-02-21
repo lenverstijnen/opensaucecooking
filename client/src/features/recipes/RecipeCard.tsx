@@ -8,7 +8,7 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
-import { useRecipe } from "./state";
+import { Recipe, useRecipe } from "./state";
 import { RecipeCardActions } from "./RecipeCardActions";
 import { RecipeCardComments } from "./RecipeCardComments";
 
@@ -33,7 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
+interface Props {
+  recipeId: string;
+}
+
+export const RecipeCard: React.FC<Props> = ({ recipeId }) => {
   const classes = useStyles();
   const recipe = useRecipe(recipeId);
   if (!recipe) return <div>Not found</div>;
