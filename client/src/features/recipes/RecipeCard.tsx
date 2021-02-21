@@ -61,7 +61,7 @@ export const RecipeCard: React.FC<Props> = ({ recipeId }) => {
       <CardHeader avatar={CardAvatar} title={user.fullName}></CardHeader>
       <CardMedia image={image} className={classes.media}></CardMedia>
       <RecipeCardActions
-        recipe={recipe}
+        recipeId={recipeId}
         className={classes.actions}
       ></RecipeCardActions>
       <CardContent className={classes.body}>
