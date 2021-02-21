@@ -1,13 +1,8 @@
+import { Typography } from "@material-ui/core"
 import React from "react"
-import { makeStyles, Typography, Button } from "@material-ui/core"
-import { ICreateRecipeState, initialIngredient } from "./CreateRecipe"
+import AddButton from "../../../common/AddButton"
 import Input from "../../../common/Input"
-import AlignRight from "../../../common/AlignRight"
-import { Add } from "@material-ui/icons"
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}))
+import { ICreateRecipeState, initialIngredient } from "./CreateRecipe"
 
 interface Props {
   state: ICreateRecipeState
@@ -22,8 +17,6 @@ const AddIngredients: React.FC<Props> = ({
   handleChange,
   errors,
 }) => {
-  const classes = useStyles()
-
   const addIngredient = () => {
     setState({
       ...state,
@@ -62,16 +55,7 @@ const AddIngredients: React.FC<Props> = ({
           />
         </div>
       ))}
-      <AlignRight>
-        <Button
-          onClick={addIngredient}
-          color="secondary"
-          size="small"
-          startIcon={<Add />}
-        >
-          Add ingredient
-        </Button>
-      </AlignRight>
+      <AddButton onClick={addIngredient} label="Add Ingredient" />
     </>
   )
 }

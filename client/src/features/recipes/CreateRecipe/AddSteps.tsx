@@ -1,13 +1,7 @@
 import React from "react"
-import { makeStyles, Button } from "@material-ui/core"
-import AlignRight from "../../../common/AlignRight"
+import AddButton from "../../../common/AddButton"
 import Input from "../../../common/Input"
-import { Add } from "@material-ui/icons"
 import { ICreateRecipeState } from "./CreateRecipe"
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}))
 
 interface Props {
   state: ICreateRecipeState
@@ -22,8 +16,6 @@ const AddSteps: React.FC<Props> = ({
   setState,
   errors,
 }) => {
-  const classes = useStyles()
-
   const addStep = () => setState({ ...state, steps: [...state.steps, ""] })
 
   return (
@@ -39,16 +31,10 @@ const AddSteps: React.FC<Props> = ({
           error={errors.steps?.[i]}
         />
       ))}
-      <AlignRight>
-        <Button
-          onClick={addStep}
-          color="secondary"
-          size="small"
-          startIcon={<Add />}
-        >
-          Add step
-        </Button>
-      </AlignRight>
+      <AddButton
+        onClick={addStep}
+        label={`Add step ${state.steps.length + 1}`}
+      />
     </>
   )
 }
