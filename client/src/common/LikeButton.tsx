@@ -1,16 +1,38 @@
-import { IconButton } from "@material-ui/core";
+import React from "react";
+import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
-import { useState } from "react";
 
-export const LikeButton = () => {
-  const [liked, setLiked] = useState(false);
+const useStyles = makeStyles(() => ({
+  count: {
+    marginLeft: 4,
+  },
+}));
 
+interface Props {
+  isLiked?: boolean;
+  onLike?: (isLiked: boolean) => void;
+  likes?: string[];
+}
+
+export const LikeButton: React.FC<Props> = ({ isLiked, onLike, likes }) => {
+  const styles = useStyles();
   const LikedButton = <Favorite color="error" />;
   const NotLikedBUtton = <FavoriteBorder />;
 
+  const clickHandler = () => {
+    if (onLike) {
+      onLike(!isLiked);
+    }
+  };
+
   return (
-    <IconButton onClick={() => setLiked(!liked)}>
-      {liked ? LikedButton : NotLikedBUtton}
+    <IconButton onClick={clickHandler}>
+      {isLiked ? LikedButton : NotLikedBUtton}
+      {likes?.length ? (
+        <Typography className={styles.count}>{likes?.length}</Typography>
+      ) : (
+        ""
+      )}
     </IconButton>
   );
 };

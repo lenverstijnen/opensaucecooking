@@ -4,9 +4,11 @@ import {
   CardHeader,
   CardMedia,
   makeStyles,
+  CardActions,
   CardContent,
+  Typography,
 } from "@material-ui/core";
-import { useRecipe } from "./state";
+import { Recipe, useRecipe } from "./state";
 import { RecipeCardActions } from "./RecipeCardActions";
 import { RecipeCardComments } from "./RecipeCardComments";
 
@@ -23,9 +25,19 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   avatar: {},
+  actions: {
+    paddingBottom: 0,
+  },
+  body: {
+    paddingTop: 0,
+  },
 }));
 
-export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
+interface Props {
+  recipeId: string;
+}
+
+export const RecipeCard: React.FC<Props> = ({ recipeId }) => {
   const classes = useStyles();
   const recipe = useRecipe(recipeId);
   if (!recipe) return <div>Not found</div>;
@@ -48,8 +60,14 @@ export const RecipeCard = ({ recipeId }: { recipeId: string }) => {
     <Card className={classes.root}>
       <CardHeader avatar={CardAvatar} title={user.fullName}></CardHeader>
       <CardMedia image={image} className={classes.media}></CardMedia>
-      <RecipeCardActions recipe={recipe}></RecipeCardActions>
-      <CardContent>
+      <RecipeCardActions
+        recipeId={recipeId}
+        className={classes.actions}
+      ></RecipeCardActions>
+      <CardContent className={classes.body}>
+        <Typography variant="h6">{recipe.name}</Typography>
+        <Typography paragraph>This will be a description.</Typography>
+
         <RecipeCardComments></RecipeCardComments>
       </CardContent>
     </Card>

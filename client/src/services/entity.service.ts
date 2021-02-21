@@ -9,6 +9,7 @@ import { from, Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { ArrayOrT } from "../utils/array-or-t";
 import { createCrudService, ICrudService, PartialWithId } from "./crud.service";
+import httpService from "./http.service";
 
 export interface EntityServiceMethods<T extends { _id: string }> {
   all(opts?: EntityServiceRequestOptions): Observable<T[]>;
@@ -19,6 +20,7 @@ export interface EntityServiceMethods<T extends { _id: string }> {
   create(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
   update(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
   remove(id: string): Promise<void>;
+  post<R>(url: string, body?: any): Promise<R>;
 }
 
 export interface EntityService<T extends { _id: string }>
@@ -55,7 +57,7 @@ function createEntityServiceMethods<T extends { _id: string }>(
   query: QueryEntity<EntityState<T, string>>
 ) {
   const allRequest = async () => {
-    const hasCache = false || store._cache().value;
+    const hasCache = store._cache().value;
     if (hasCache) return;
 
     const result = await crudService.all();
@@ -63,7 +65,6 @@ function createEntityServiceMethods<T extends { _id: string }>(
   };
 
   const all = ({ refreshCache }: EntityServiceRequestOptions = {}) => {
-    store.setHasCache(false);
     if (refreshCache) store.setHasCache(false);
     const req = allRequest();
 
@@ -108,5 +109,6 @@ function createEntityServiceMethods<T extends { _id: string }>(
     create,
     update,
     remove,
+    post: crudService.post,
   };
 }

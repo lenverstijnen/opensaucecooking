@@ -3,13 +3,19 @@ import { CommentButton } from "../../common/CommentButton";
 import { CopyButton } from "../../common/CopyButton";
 import { FavoriteButton } from "../../common/FavoriteButton";
 import { LikeButton } from "../../common/LikeButton";
-import { Recipe } from "./state";
+import { useRecipeLike } from "./hooks/useRecipeLike";
 
-export const RecipeCardActions = ({ recipe }: { recipe: Recipe }) => {
+interface Props {
+  recipeId: string;
+  className?: string;
+}
+export const RecipeCardActions: React.FC<Props> = ({ recipeId, className }) => {
+  const [isLiked, setIsLiked, likes] = useRecipeLike(recipeId);
+
   return (
-    <CardActions disableSpacing>
+    <CardActions disableSpacing className={className}>
       <Box marginRight="auto">
-        <LikeButton />
+        <LikeButton isLiked={isLiked} onLike={setIsLiked} likes={likes} />
         <CommentButton />
         <CopyButton />
       </Box>

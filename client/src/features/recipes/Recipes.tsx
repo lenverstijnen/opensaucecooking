@@ -19,15 +19,14 @@ const useStyles = makeStyles((theme) => ({
 export const Recipes = () => {
   const styles = useStyles();
 
-  const { entities: recipes, loading } = useRecipes();
-  const recipeIds = recipes.map((x) => x._id);
+  const { entities: recipes, loading, entityIds: recipeIds } = useRecipes();
 
   const cards = recipeIds.map((recipeId) => (
     <RecipeCard recipeId={recipeId}></RecipeCard>
   ));
 
   return (
-    <Container className={styles.container}>
+    <Container disableGutters maxWidth="sm">
       {loading ? <Loading /> : cards}
     </Container>
   );

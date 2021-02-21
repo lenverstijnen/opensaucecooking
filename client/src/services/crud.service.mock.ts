@@ -9,4 +9,5 @@ export const mockCrudService = <
   update: jest.fn(),
   updateMany: jest.fn(),
   remove: jest.fn(),
+  post: jest.fn(),
 });

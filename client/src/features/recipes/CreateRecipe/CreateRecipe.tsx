@@ -3,7 +3,8 @@ import { useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import { UnitEnum } from "../../../common/enums/UnitEnum"
 import Input from "../../../common/formComponents/Input"
-import { createRecipe, recipeService, useRecipe } from "../state"
+import { createRecipe, useRecipe } from "../state"
+import { recipeService } from "../state/recipe.service"
 import AddIngredients from "./AddIngredients"
 import AddPicture from "./AddPicture"
 import AddSteps from "./AddSteps"
@@ -26,7 +27,11 @@ export interface ICreateRecipeState {
   steps: string[]
 }
 
-export const initialIngredient = { name: "", quantity: "", unit: UnitEnum.gram }
+export const initialIngredient = {
+  name: "",
+  quantity: "",
+  unit: UnitEnum.gram,
+}
 
 const initialState: ICreateRecipeState = {
   name: "",
