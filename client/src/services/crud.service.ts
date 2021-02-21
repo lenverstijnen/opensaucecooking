@@ -12,6 +12,7 @@ export interface ICrudService<T extends { _id: string }> {
   update(body: ArrayOrT<PartialWithId<T>>): Promise<T | T[]>;
   updateMany(body: PartialWithId<T>[]): Promise<T[]>;
   remove(id: string): Promise<void>;
+  post<B, R>(url: string, body?: B): Promise<R>;
 }
 
 function appendId(url: string, id: string) {
@@ -56,6 +57,11 @@ export function createCrudService<T extends { _id: string }>(
     await httpService.delete<void>(removeUrl);
   };
 
+  const post = async <B, R>(postUrl: string, body?: B) => {
+    const result = await httpService.post<R>(`${url}/${postUrl}`, body);
+    return result.data;
+  };
+
   return {
     all,
     find,
@@ -63,5 +69,6 @@ export function createCrudService<T extends { _id: string }>(
     update,
     updateMany,
     remove,
+    post,
   };
 }

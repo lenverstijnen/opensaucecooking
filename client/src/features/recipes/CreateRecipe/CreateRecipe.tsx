@@ -1,17 +1,18 @@
-import { Button, Container, makeStyles } from "@material-ui/core"
-import { useState } from "react"
-import { useHistory, useParams } from "react-router-dom"
-import Input from "../../../common/Input"
-import { createRecipe, recipeService, useRecipe } from "../state"
-import AddIngredients from "./AddIngredients"
-import AddPicture from "./AddPicture"
-import AddSteps from "./AddSteps"
+import { Button, Container, makeStyles } from "@material-ui/core";
+import { useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import Input from "../../../common/Input";
+import { createRecipe, useRecipe } from "../state";
+import { recipeService } from "../state/recipe.service";
+import AddIngredients from "./AddIngredients";
+import AddPicture from "./AddPicture";
+import AddSteps from "./AddSteps";
 
 const useStyles = makeStyles((theme) => ({
   btn: {
     margin: "10px 0",
   },
-}))
+}));
 
 export enum UnitEnum {
   gram = "gram",
@@ -20,65 +21,69 @@ export enum UnitEnum {
 }
 
 export interface IIngredient {
-  name: string
-  quantity: number | string
-  unit: UnitEnum
+  name: string;
+  quantity: number | string;
+  unit: UnitEnum;
 }
 
 export interface ICreateRecipeState {
-  name: string
-  ingredients: IIngredient[]
-  steps: string[]
+  name: string;
+  ingredients: IIngredient[];
+  steps: string[];
 }
 
-export const initialIngredient = { name: "", quantity: "", unit: UnitEnum.gram }
+export const initialIngredient = {
+  name: "",
+  quantity: "",
+  unit: UnitEnum.gram,
+};
 
 const initialState: ICreateRecipeState = {
   name: "",
   ingredients: [initialIngredient],
   steps: [""],
-}
+};
 
 export const CreateRecipe = () => {
-  const classes = useStyles()
-  const { goBack } = useHistory()
-  const { id } = useParams<{ id?: string }>()
-  const recipe = useRecipe(id)
-  const [state, setState] = useState(initialState)
-  const [errors, setErrors] = useState<{ [k: string]: any }>({})
-  const isNew = !recipe
+  const classes = useStyles();
+  const { goBack } = useHistory();
+  const { id } = useParams<{ id?: string }>();
+  const recipe = useRecipe(id);
+  const [state, setState] = useState(initialState);
+  const [errors, setErrors] = useState<{ [k: string]: any }>({});
+  const isNew = !recipe;
 
-  const handleChange = () => {}
+  const handleChange = () => {};
 
   const validateForm = () => {
     // TODO: validate input
-  }
+  };
 
   const handleSave = () => {
-    validateForm()
+    validateForm();
 
     if (isNew) {
-      handleCreate()
+      handleCreate();
     } else {
-      handleEdit()
+      handleEdit();
     }
 
-    goBack()
-  }
+    goBack();
+  };
 
   const handleCreate = async () => {
-    const newRecipe = createRecipe({ ...state })
-    recipeService.create(newRecipe)
-  }
+    const newRecipe = createRecipe({ ...state });
+    recipeService.create(newRecipe);
+  };
 
   const handleEdit = () => {
-    if (!id) throw new Error("No id found.")
+    if (!id) throw new Error("No id found.");
 
     recipeService.update({
       _id: id,
       name: state.name,
-    })
-  }
+    });
+  };
 
   return (
     <Container>
@@ -115,5 +120,5 @@ export const CreateRecipe = () => {
         </Button>
       </form>
     </Container>
-  )
-}
+  );
+};

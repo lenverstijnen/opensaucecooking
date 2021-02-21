@@ -9,6 +9,7 @@ import { from, Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { ArrayOrT } from "../utils/array-or-t";
 import { createCrudService, ICrudService, PartialWithId } from "./crud.service";
+import httpService from "./http.service";
 
 export interface EntityServiceMethods<T extends { _id: string }> {
   all(opts?: EntityServiceRequestOptions): Observable<T[]>;
@@ -19,6 +20,7 @@ export interface EntityServiceMethods<T extends { _id: string }> {
   create(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
   update(item: ArrayOrT<PartialWithId<T>>): Promise<void>;
   remove(id: string): Promise<void>;
+  post<B, R>(url: string, body?: B): Promise<R>;
 }
 
 export interface EntityService<T extends { _id: string }>
@@ -108,5 +110,6 @@ function createEntityServiceMethods<T extends { _id: string }>(
     create,
     update,
     remove,
+    post: crudService.post,
   };
 }
