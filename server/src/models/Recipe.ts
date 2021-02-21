@@ -1,5 +1,5 @@
-import { string } from "joi"
-import { Document, model, ObjectId, Schema } from "mongoose"
+import { string } from "joi";
+import { Document, model, ObjectId, Schema } from "mongoose";
 
 export enum UnitEnum {
   gram = "gram",
@@ -8,23 +8,23 @@ export enum UnitEnum {
 }
 
 export interface IIngredient {
-  name: string
-  quantity: number | string
-  unit: UnitEnum
+  name: string;
+  quantity: number | string;
+  unit: UnitEnum;
 }
 export interface IRating {
-  userId: ObjectId
-  value: number
-  createdAt: Date
+  userId: ObjectId;
+  value: number;
+  createdAt: Date;
 }
 export interface IRecipe {
-  name: string
+  name: string;
 
-  steps: string[]
-  ingredients: IIngredient[]
-  userId: ObjectId
-  media: string[]
-  rating: IRating[]
+  steps: string[];
+  ingredients: IIngredient[];
+  userId: ObjectId;
+  media: string[];
+  rating: IRating[];
 }
 
 const recipeSchema = new Schema(
@@ -66,8 +66,8 @@ const recipeSchema = new Schema(
     ],
   },
   { versionKey: false }
-)
+);
 
-interface IIngredientModel extends IIngredient, Document {}
+interface IRecipeModel extends IRecipe, Document {}
 
-export const Recipe = model<IIngredientModel>("recipe", recipeSchema)
+export const Recipe = model<IRecipeModel>("recipe", recipeSchema);
