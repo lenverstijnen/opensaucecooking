@@ -1,14 +1,30 @@
-import { Button, Container, makeStyles } from "@material-ui/core"
-import { ChangeEvent, useState } from "react"
+import { Container, makeStyles, Button } from "@material-ui/core"
+import { Field, Form, Formik } from "formik"
 import { useHistory, useParams } from "react-router-dom"
 import { UnitEnum } from "../../../common/enums/UnitEnum"
-import Input from "../../../common/formComponents/Input"
-import { createRecipe, useRecipe } from "../state"
+import { useRecipe } from "../state"
 import { recipeService } from "../state/recipe.service"
+import * as yup from "yup"
 import AddIngredients from "./AddIngredients"
-import AddPictures from "./AddPictures"
 import AddSteps from "./AddSteps"
-import { validateRecipe } from "../../../validation/validateAddRecipe"
+import Input from "./Input"
+import AddPictures from "./AddPictures"
+import SectionWrapper from "../../../common/SectionWrapper"
+
+const schema = yup.object({
+  name: yup.string().required(),
+  ingredients: yup.array().of(
+    yup.object({
+      name: yup.string().required("This field is required"),
+      quantity: yup.number().required("This field is required"),
+      unit: yup
+        .string()
+        .matches(/gram|liter|pieces/)
+        .required("This field is required"),
+    })
+  ),
+  steps: yup.array().of(yup.string().required("This field is required")),
+})
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -47,28 +63,15 @@ export const CreateRecipe = () => {
   const { goBack } = useHistory()
   const { id } = useParams<{ id?: string }>()
   const recipe = useRecipe(id)
-  const [state, setState] = useState(initialState)
-  const [errors, setErrors] = useState<ErrorObj>({})
   const isNew = !recipe
 
-  const validateForm = async () => {
-    const errors = await validateRecipe(state)
-    if (!errors) return
-    setErrors(errors)
-  }
-
   const handleSave = () => {
-    console.log(state)
-
-    validateForm()
-
-    // if (isNew) {
-    //   handleCreate()
-    // } else {
-    //   handleEdit()
-    // }
-
-    // goBack()
+    if (isNew) {
+      handleCreate()
+    } else {
+      handleEdit()
+    }
+    goBack()
   }
 
   const handleCreate = async () => {
@@ -77,42 +80,49 @@ export const CreateRecipe = () => {
   }
 
   const handleEdit = () => {
-    if (!id) throw new Error("No id found.")
-
-    recipeService.update({
-      _id: id,
-      name: state.name,
-    })
+    // if (!id) throw new Error("No id found.")
+    // recipeService.update({
+    //   _id: id,
+    //   name: state.name,
+    // })
   }
 
   return (
     <Container>
       <h2>{isNew ? "Create Recipe" : "Edit Recipe"}</h2>
-      <form noValidate autoComplete="off">
-        <Input
-          name="name"
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setState({ ...state, name: e.target.value })
-          }
-          label="Name"
-          value={state.name}
-          error={errors.name}
-        />
-        <AddIngredients state={state} setState={setState} errors={errors} />
-        <AddSteps state={state} setState={setState} errors={errors} />
-        <AddPictures />
-        <Button
-          className={classes.btn}
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleSave}
-        >
-          Save
-        </Button>
-      </form>
-      <pre style={{ color: "grey" }}>{JSON.stringify(state, null, 2)}</pre>
-      <pre style={{ color: "red" }}>{JSON.stringify(errors, null, 2)}</pre>
+      <Formik
+        validationSchema={schema}
+        initialValues={initialState}
+        onSubmit={(data) => handleSave()}
+      >
+        {({ values, errors }) => (
+          <>
+            <Form>
+              <SectionWrapper>
+                <Field label="Recipe name" name="name" as={Input} />
+              </SectionWrapper>
+              <AddIngredients values={values} />
+              <AddSteps values={values} />
+              <AddPictures />
+              <Button
+                className={classes.btn}
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+              >
+                {isNew ? "create" : "update"} recipe
+              </Button>
+            </Form>
+            <pre style={{ color: "blue" }}>
+              {JSON.stringify(values, null, 2)}
+            </pre>
+            <pre style={{ color: "red" }}>
+              {JSON.stringify(errors, null, 2)}
+            </pre>
+          </>
+        )}
+      </Formik>
     </Container>
   )
 }
