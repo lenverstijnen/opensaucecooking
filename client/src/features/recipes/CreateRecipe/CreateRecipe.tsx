@@ -1,5 +1,5 @@
 import { Button, Container, makeStyles } from "@material-ui/core"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import { UnitEnum } from "../../../common/enums/UnitEnum"
 import Input from "../../../common/formComponents/Input"
@@ -48,14 +48,14 @@ export const CreateRecipe = () => {
   const [errors, setErrors] = useState<{ [k: string]: any }>({})
   const isNew = !recipe
 
-  const handleChange = () => {}
-
   const validateForm = () => {
     // TODO: validate input
     setErrors({})
   }
 
   const handleSave = () => {
+    console.log(state)
+
     validateForm()
 
     if (isNew) {
@@ -87,18 +87,15 @@ export const CreateRecipe = () => {
       <form noValidate autoComplete="off">
         <Input
           name="name"
-          onChange={handleChange}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setState({ ...state, name: e.target.value })
+          }
           label="Name"
           value={state.name}
           error={errors.name}
         />
         <AddIngredients state={state} setState={setState} errors={errors} />
-        <AddSteps
-          state={state}
-          setState={setState}
-          handleChange={handleChange}
-          errors={errors}
-        />
+        <AddSteps state={state} setState={setState} errors={errors} />
         <AddPictures />
         <Button
           className={classes.btn}
