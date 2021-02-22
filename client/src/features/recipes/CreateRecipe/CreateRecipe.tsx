@@ -107,6 +107,7 @@ export const CreateRecipe = () => {
           Save
         </Button>
       </form>
+      <pre>{JSON.stringify(state, null, 2)}</pre>
     </Container>
   )
 }
