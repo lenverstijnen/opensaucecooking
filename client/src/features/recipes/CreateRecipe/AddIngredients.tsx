@@ -4,11 +4,11 @@ import { UnitEnum } from "../../../common/enums/UnitEnum"
 import AddButton from "../../../common/formComponents/AddButton"
 import Input from "../../../common/formComponents/Input"
 import Select from "../../../common/formComponents/Select"
-import { ICreateRecipeState, initialIngredient } from "./CreateRecipe"
+import { ErrorObj, ICreateRecipeState, initialIngredient } from "./CreateRecipe"
 
 interface Props {
   state: ICreateRecipeState
-  errors: any //TODO: define type
+  errors: ErrorObj
   setState: React.Dispatch<React.SetStateAction<ICreateRecipeState>>
 }
 

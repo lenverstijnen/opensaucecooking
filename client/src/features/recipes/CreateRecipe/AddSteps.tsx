@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from "react"
 import AddButton from "../../../common/formComponents/AddButton"
 import Input from "../../../common/formComponents/Input"
-import { ICreateRecipeState } from "./CreateRecipe"
+import { ErrorObj, ICreateRecipeState } from "./CreateRecipe"
 
 interface Props {
   state: ICreateRecipeState
-  errors: any //TODO: define type
+  errors: ErrorObj
   setState: React.Dispatch<React.SetStateAction<ICreateRecipeState>>
 }
 

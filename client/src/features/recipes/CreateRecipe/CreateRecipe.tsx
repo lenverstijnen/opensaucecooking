@@ -8,12 +8,15 @@ import { recipeService } from "../state/recipe.service"
 import AddIngredients from "./AddIngredients"
 import AddPictures from "./AddPictures"
 import AddSteps from "./AddSteps"
+import { validateRecipe } from "../../../validation/validateAddRecipe"
 
 const useStyles = makeStyles((theme) => ({
   btn: {
     margin: "10px 0",
   },
 }))
+
+export type ErrorObj = Record<string, any>
 
 export interface IIngredient {
   name: string
@@ -45,12 +48,13 @@ export const CreateRecipe = () => {
   const { id } = useParams<{ id?: string }>()
   const recipe = useRecipe(id)
   const [state, setState] = useState(initialState)
-  const [errors, setErrors] = useState<{ [k: string]: any }>({})
+  const [errors, setErrors] = useState<ErrorObj>({})
   const isNew = !recipe
 
-  const validateForm = () => {
-    // TODO: validate input
-    setErrors({})
+  const validateForm = async () => {
+    const errors = await validateRecipe(state)
+    if (!errors) return
+    setErrors(errors)
   }
 
   const handleSave = () => {
@@ -58,13 +62,13 @@ export const CreateRecipe = () => {
 
     validateForm()
 
-    if (isNew) {
-      handleCreate()
-    } else {
-      handleEdit()
-    }
+    // if (isNew) {
+    //   handleCreate()
+    // } else {
+    //   handleEdit()
+    // }
 
-    goBack()
+    // goBack()
   }
 
   const handleCreate = async () => {
@@ -107,7 +111,8 @@ export const CreateRecipe = () => {
           Save
         </Button>
       </form>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      <pre style={{ color: "grey" }}>{JSON.stringify(state, null, 2)}</pre>
+      <pre style={{ color: "red" }}>{JSON.stringify(errors, null, 2)}</pre>
     </Container>
   )
 }

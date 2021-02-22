@@ -31,6 +31,7 @@ const Input: React.FC<InputProps | TextFieldProps> = (props) => {
         className={clsx(classes.root, props.className)}
         {...props}
         error={Boolean(props.error)}
+        helperText={props.error}
         type={props.type || "text"}
         margin="dense"
         fullWidth
