@@ -6,7 +6,7 @@ import Input from "../../../common/formComponents/Input"
 import { createRecipe, useRecipe } from "../state"
 import { recipeService } from "../state/recipe.service"
 import AddIngredients from "./AddIngredients"
-import AddPicture from "./AddPicture"
+import AddPictures from "./AddPictures"
 import AddSteps from "./AddSteps"
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,7 @@ export const initialIngredient = {
 
 const initialState: ICreateRecipeState = {
   name: "",
-  ingredients: [initialIngredient],
+  ingredients: [{ ...initialIngredient }],
   steps: [""],
 }
 
@@ -92,19 +92,14 @@ export const CreateRecipe = () => {
           value={state.name}
           error={errors.name}
         />
-        <AddIngredients
-          state={state}
-          setState={setState}
-          handleChange={handleChange}
-          errors={errors}
-        />
+        <AddIngredients state={state} setState={setState} errors={errors} />
         <AddSteps
           state={state}
           setState={setState}
           handleChange={handleChange}
           errors={errors}
         />
-        <AddPicture />
+        <AddPictures />
         <Button
           className={classes.btn}
           fullWidth

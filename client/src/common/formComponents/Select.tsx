@@ -9,6 +9,7 @@ import {
 import randomString from "crypto-random-string"
 
 export interface SelectProps {
+  name: string
   label: string
   value: string
   error: string | undefined
@@ -39,6 +40,7 @@ const Select: React.FC<SelectProps> = (props) => {
         {props.label}
       </InputLabel>
       <MuiSelect
+        name={props.name}
         labelWidth={labelWidth}
         labelId={id}
         value={props.value}

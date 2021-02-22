@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {}
 
-const AddPicture: React.FC<Props> = () => {
+const AddPictures: React.FC<Props> = () => {
   const classes = useStyles()
   const [images, setImages] = useState<File[]>([])
 
@@ -91,4 +91,4 @@ const AddPicture: React.FC<Props> = () => {
   )
 }
 
-export default AddPicture
+export default AddPictures
