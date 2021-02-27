@@ -1,8 +1,8 @@
 import { ICrudService } from "./crud.service";
 
-export const mockCrudService = <
-  T extends { _id: string }
->(): ICrudService<T> => ({
+export const mockCrudService = <T extends { _id: string }>(): jest.Mocked<
+  ICrudService<T>
+> => ({
   create: jest.fn(),
   all: jest.fn(),
   find: jest.fn(),
