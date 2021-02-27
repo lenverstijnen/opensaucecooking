@@ -1,20 +1,17 @@
-import { useState, useEffect } from "react";
-import { Observable } from "rxjs";
+import { useState, useEffect, useRef } from "react";
+import { Observable, Subscription } from "rxjs";
 
-export function useObservable<T>(
-  source$: () => Observable<T>,
-  initialValue: T,
-  deps?: React.DependencyList
-) {
+export function useObservable<T>(source$: Observable<T>, initialValue: T) {
   const [data, setData] = useState(initialValue);
+  const ref = useRef<Subscription>();
 
   useEffect(() => {
-    const { unsubscribe } = source$().subscribe((data) => {
+    ref.current = source$.subscribe((data) => {
       setData(data);
     });
 
-    // return unsubscribe;
-  }, deps);
+    return () => ref.current?.unsubscribe();
+  }, []);
 
   return data;
 }
