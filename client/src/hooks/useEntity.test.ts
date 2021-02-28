@@ -1,11 +1,8 @@
-import { QueryEntity } from "@datorama/akita";
-import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-dom/test-utils";
-import { createCrudService, ICrudService } from "../services/crud.service";
+import { ICrudService } from "../services/crud.service";
 import { mockCrudService } from "../services/crud.service.mock";
 import { createEntityService, EntityService } from "../services/entity.service";
-import { nextTick } from "../utils/nextTick";
 import { useEntity } from "./useEntity";
 
 let entityService: EntityService<Test>;
@@ -37,15 +34,6 @@ it("should return the value if it's updated later", async () => {
   entityService.store.set([item]);
   await waitForValueToChange(() => result.current);
   expect(result.current).toEqual(item);
-});
-
-fit("should return undefined if the entity is removed later", async () => {
-  entityService.store.set([item]);
-  const { result, waitForValueToChange } = render();
-  entityService.store.set([]);
-  await waitForValueToChange(() => result.current);
-  console.log(result.all);
-  expect(result.current).toBeUndefined();
 });
 
 function render() {
