@@ -1,4 +1,5 @@
 import { QueryEntity } from "@datorama/akita";
+import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { act } from "react-dom/test-utils";
 import { createCrudService, ICrudService } from "../services/crud.service";
@@ -31,21 +32,24 @@ it("should return the initial value if it is in the store", () => {
   expect(result.current).toEqual(item);
 });
 
-it("should return the value if it's updated later", () => {
-  const { result, rerender } = render();
-  act(() => {
-    entityService.store.set([item]);
-  });
-
+it("should return the value if it's updated later", async () => {
+  const { result, waitForValueToChange } = render();
+  entityService.store.set([item]);
+  await waitForValueToChange(() => result.current);
   expect(result.current).toEqual(item);
 });
 
+fit("should return undefined if the entity is removed later", async () => {
+  entityService.store.set([item]);
+  const { result, waitForValueToChange } = render();
+  entityService.store.set([]);
+  await waitForValueToChange(() => result.current);
+  console.log(result.all);
+  expect(result.current).toBeUndefined();
+});
+
 function render() {
-  const renderResult = renderHook(() => useEntity(entityService, "a"));
-  return {
-    ...renderResult,
-    entityService,
-  };
+  return renderHook(() => useEntity(entityService, "a"));
 }
 
 interface Test {
