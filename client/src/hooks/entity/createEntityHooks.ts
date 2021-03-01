@@ -7,6 +7,6 @@ export function createEntityHooks<T extends { _id: string }>(
 ) {
   return {
     useEntities: () => useEntityAll(entityService),
-    useEntity: (id: string) => useEntityFind(entityService, id),
+    useEntity: (id?: string) => useEntityFind(entityService, id),
   };
 }

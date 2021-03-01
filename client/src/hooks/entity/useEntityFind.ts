@@ -3,8 +3,8 @@ import { useObservable } from "../useObservable";
 
 export function useEntityFind<T extends { _id: string }>(
   entityService: EntityService<T>,
-  id: string
+  id?: string
 ) {
-  const initialValue = entityService.query.getEntity(id);
-  return useObservable(entityService.find(id), initialValue);
+  const initialValue = id ? entityService.query.getEntity(id) : undefined;
+  return useObservable(id ? entityService.find(id) : undefined, initialValue);
 }
