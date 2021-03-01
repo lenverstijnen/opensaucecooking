@@ -1,8 +1,8 @@
-import { Container, makeStyles } from "@material-ui/core"
-import { Loading } from "../../auth/Loading"
-import { RecipeCard } from "./RecipeCard"
-import { useRecipes } from "./state"
-import { recipeService } from "./state/recipe.service"
+import { Container, makeStyles } from "@material-ui/core";
+import { Loading } from "../../auth/Loading";
+import { RecipeCard } from "./RecipeCard";
+import { useRecipes } from "./state";
+import { recipeService } from "./state/recipe.service";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -15,20 +15,20 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: 600,
   },
-}))
+}));
 
 export const Recipes = () => {
-  const styles = useStyles()
+  const styles = useStyles();
 
-  const { entities: recipes, loading, entityIds: recipeIds } = useRecipes()
+  const { loading, entityIds: recipeIds } = useRecipes();
 
   const cards = recipeIds.map((recipeId) => (
     <RecipeCard key={recipeId} recipeId={recipeId}></RecipeCard>
-  ))
+  ));
 
   return (
     <Container disableGutters maxWidth="sm">
       {loading ? <Loading /> : cards}
     </Container>
-  )
-}
+  );
+};
