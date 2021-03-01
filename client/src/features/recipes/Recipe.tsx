@@ -1,8 +1,5 @@
-import { useParams } from "react-router-dom";
-import { recipeService } from "./state/recipe.service";
-import { useObservable } from "../../hooks/useObservable";
-import { EntityService } from "../../services/entity.service";
 import React from "react";
+import { useParams } from "react-router-dom";
 import { useRecipe } from "./state";
 
 export function Recipe() {
