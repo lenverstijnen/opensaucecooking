@@ -1,5 +1,7 @@
 import { guid } from "@datorama/akita";
 import { IRecipe } from "../../../../../server/src/models/Recipe";
+import { useEntities } from "../../../hooks/useEntities";
+import { useEntity } from "../../../hooks/useEntity";
 import { setupEntityHooks } from "../../../services/setupEntity";
 import { recipeService } from "./recipe.service";
 
@@ -21,7 +23,10 @@ export function createRecipe(params: Partial<Recipe>): Recipe {
   };
 }
 
-export const {
-  useEntities: useRecipes,
-  useEntity: useRecipe,
-} = setupEntityHooks<Recipe>(recipeService);
+export function useRecipe(id: string) {
+  return useEntity(recipeService, id);
+}
+
+export const { useEntities: useRecipes } = setupEntityHooks<Recipe>(
+  recipeService
+);

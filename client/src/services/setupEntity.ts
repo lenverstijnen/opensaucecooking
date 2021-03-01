@@ -16,7 +16,7 @@ export function setupEntityHooks<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   return {
-    useEntities: useEntities(entityService),
+    // useEntities: useEntities(entityService),
     useEntity: createUseEntity(entityService),
   };
 }
