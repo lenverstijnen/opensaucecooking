@@ -1,8 +1,11 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { ICrudService } from "../services/crud.service";
-import { mockCrudService } from "../services/crud.service.mock";
-import { createEntityService, EntityService } from "../services/entity.service";
-import { useEntity } from "./useEntity";
+import { ICrudService } from "../../services/crud.service";
+import { mockCrudService } from "../../services/crud.service.mock";
+import {
+  createEntityService,
+  EntityService,
+} from "../../services/entity.service";
+import { useEntityFind } from "./useEntityFind";
 
 let entityService: EntityService<Test>;
 let crudService: jest.Mocked<ICrudService<Test>>;
@@ -34,7 +37,7 @@ it("should return the value if it's updated later", async () => {
 });
 
 function render() {
-  return renderHook(() => useEntity(entityService, "a"));
+  return renderHook(() => useEntityFind(entityService, "a"));
 }
 
 interface Test {

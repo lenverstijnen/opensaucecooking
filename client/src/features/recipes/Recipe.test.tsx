@@ -1,8 +1,7 @@
-import { getByText, render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import React from "react";
 import { Recipe } from "./Recipe";
 import { createRecipe } from "./state";
-// import { createRecipe } from "./state";
 import { recipeService } from "./state/recipe.service";
 
 jest.mock("react-router-dom", () => ({

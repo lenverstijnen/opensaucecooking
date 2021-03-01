@@ -23,7 +23,7 @@ export interface EntityServiceMethods<T extends { _id: string }> {
   post<R>(url: string, body?: any): Promise<R>;
 }
 
-export interface EntityService<T extends { _id: string }>
+export interface EntityService<T extends { _id: string } = { _id: string }>
   extends EntityServiceMethods<T> {
   store: EntityStore<EntityState<T, string>>;
   query: QueryEntity<EntityState<T, string>>;

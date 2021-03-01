@@ -3,7 +3,7 @@ import { recipeService } from "./state/recipe.service";
 import { useObservable } from "../../hooks/useObservable";
 import { EntityService } from "../../services/entity.service";
 import React from "react";
-import { createUseEntity } from "../../hooks/useEntity";
+import { useRecipe } from "./state";
 
 export function Recipe() {
   const { id } = useParams<{ id: string }>();
@@ -19,5 +19,3 @@ export function Recipe() {
     </h1>
   );
 }
-
-const useRecipe = createUseEntity(recipeService);

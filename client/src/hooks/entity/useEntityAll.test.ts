@@ -1,9 +1,11 @@
-import { wait } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import { createEntityService, EntityService } from "../services/entity.service";
-import { useEntities } from "./useEntities";
+import {
+  createEntityService,
+  EntityService,
+} from "../../services/entity.service";
+import { useEntityAll } from "./useEntityAll";
 
-jest.mock("../services/http.service", () => ({
+jest.mock("../../services/http.service", () => ({
   get: jest.fn().mockResolvedValue([]),
 }));
 
@@ -72,5 +74,5 @@ it("should return loading state if it's changed later to true", async () => {
 });
 
 function render() {
-  return renderHook(() => useEntities(entityService));
+  return renderHook(() => useEntityAll(entityService));
 }
