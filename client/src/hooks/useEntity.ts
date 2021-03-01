@@ -6,6 +6,11 @@ export function useEntity<T extends { _id: string }>(
   id: string
 ) {
   const initialValue = entityService.query.getEntity(id);
-  const entity = useObservable(entityService.find(id), initialValue);
-  return entity;
+  return useObservable(entityService.find(id), initialValue);
+}
+
+export function createUseEntity<T extends { _id: string }>(
+  entityService: EntityService<T>
+) {
+  return (id: string) => useEntity(entityService, id);
 }

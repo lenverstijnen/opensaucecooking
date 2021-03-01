@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { act } from "react-dom/test-utils";
 import { ICrudService } from "../services/crud.service";
 import { mockCrudService } from "../services/crud.service.mock";
 import { createEntityService, EntityService } from "../services/entity.service";
@@ -12,19 +11,17 @@ let item: Test;
 beforeEach(() => {
   item = { _id: "a", val: 1 };
   crudService = mockCrudService();
-  crudService.find.mockResolvedValue(item);
   entityService = createEntityService<Test>("test", crudService);
 });
 
-it("should return undefined if it has no store value", () => {
+it("should return undefined if it has no store value", async () => {
+  crudService.find.mockRejectedValue(new Error("Not found"));
   const { result } = render();
   expect(result.current).toBeUndefined();
 });
 
 it("should return the initial value if it is in the store", () => {
-  act(() => {
-    entityService.store.add(item);
-  });
+  entityService.store.add(item);
   const { result } = render();
   expect(result.current).toEqual(item);
 });
