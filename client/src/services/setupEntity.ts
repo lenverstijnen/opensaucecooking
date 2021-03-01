@@ -1,4 +1,4 @@
-import { useEntities } from "../hooks/useEntities";
+import { createUseEntities, useEntities } from "../hooks/useEntities";
 import { createUseEntity } from "../hooks/useEntity";
 import { createEntityService, EntityService } from "./entity.service";
 
@@ -16,7 +16,7 @@ export function setupEntityHooks<T extends { _id: string }>(
   entityService: EntityService<T>
 ) {
   return {
-    // useEntities: useEntities(entityService),
+    useEntities: createUseEntities(entityService),
     useEntity: createUseEntity(entityService),
   };
 }

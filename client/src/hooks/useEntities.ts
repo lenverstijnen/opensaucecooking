@@ -15,3 +15,9 @@ export function useEntities<T extends { _id: string }>(
     ...entityService,
   };
 }
+
+export function createUseEntities<T extends { _id: string }>(
+  entityService: EntityService<T>
+) {
+  return () => useEntities(entityService);
+}
