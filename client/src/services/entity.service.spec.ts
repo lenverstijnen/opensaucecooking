@@ -9,7 +9,7 @@ interface TestEntity {
 interface TestState extends EntityState<TestEntity, string> {}
 
 describe("EntityService", () => {
-  const createTestService = () => createEntityService<TestState>("test");
+  const createTestService = () => createEntityService<TestEntity>("test");
   let entityService: ReturnType<typeof createTestService>;
   let crudService: ICrudService<TestEntity>;
   let testQuery: QueryEntity<TestState>;
