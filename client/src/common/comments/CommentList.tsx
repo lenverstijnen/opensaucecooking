@@ -2,6 +2,7 @@ import { IComment } from "./IComment";
 import { Comment } from "./Comment";
 import { makeStyles } from "@material-ui/core";
 import { AddComment } from "./AddComment";
+import React from "react";
 
 const useStyles = makeStyles(() => ({
   comment: {

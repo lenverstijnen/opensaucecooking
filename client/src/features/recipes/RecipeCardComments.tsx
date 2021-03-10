@@ -1,5 +1,6 @@
 import { CommentList } from "../../common/comments/CommentList";
 import { IComment } from "../../common/comments/IComment";
+import React from "react";
 
 export const RecipeCardComments = () => {
   const mockComments: IComment[] = [

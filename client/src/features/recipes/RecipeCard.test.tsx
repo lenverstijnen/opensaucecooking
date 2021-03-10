@@ -22,6 +22,11 @@ it("should show the name and description of the recipe", () => {
   expect(screen.queryByText("This will be a description.")).toBeTruthy();
 });
 
+it("should render the comments", () => {
+  renderRecipeCard();
+  expect(screen.queryByText("This is a comment.")).toBeTruthy();
+});
+
 function verifyRecipeImage() {
   const image = screen.queryByTestId("recipe-image");
   expect(image).toHaveStyle({ backgroundImage: "url(lasagne.png)" });
@@ -33,7 +38,7 @@ function renderRecipeCard() {
 
   jest.spyOn(RecipeStore, "useRecipe").mockReturnValue(recipe);
   jest.spyOn(UserStore, "useUser").mockReturnValue(user);
-  return render(<RecipeCard recipeId="a" userId="a" />);
+  return render(<RecipeCard recipeId="a" />);
 }
 
 function verifyAvatar(photoUrl: string) {

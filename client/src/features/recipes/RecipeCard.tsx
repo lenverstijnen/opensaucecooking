@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { getFullName } from "../../utils/getFullName";
 import { useUser } from "../users/state/user.store";
+import { RecipeCardComments } from "./RecipeCardComments";
 import { useRecipe } from "./state";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,15 +36,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   recipeId: string;
-  userId: string;
 }
 
-export const RecipeCard: React.FC<Props> = ({ recipeId, userId }) => {
+export const RecipeCard: React.FC<Props> = ({ recipeId }) => {
   const classes = useStyles();
   const recipe = useRecipe(recipeId);
+  const user = useUser(String(recipe?.userId));
   if (!recipe) return <div>Not found</div>;
-
-  const user = useUser(userId);
 
   const fullName = user ? getFullName(user) : "";
   const recipeImage = recipe.media[0];
@@ -66,7 +65,9 @@ export const RecipeCard: React.FC<Props> = ({ recipeId, userId }) => {
         image={recipeImage}
         className={classes.media}
         data-testid="recipe-image"
-      ></CardMedia>
+      >
+        <div></div>
+      </CardMedia>
       {/* 
       <RecipeCardActions
         recipeId={recipeId}
@@ -76,7 +77,7 @@ export const RecipeCard: React.FC<Props> = ({ recipeId, userId }) => {
         <Typography variant="h6">{recipe.name}</Typography>
         <Typography paragraph>This will be a description.</Typography>
 
-        {/* <RecipeCardComments></RecipeCardComments> */}
+        <RecipeCardComments></RecipeCardComments>
       </CardContent>
     </Card>
   );
