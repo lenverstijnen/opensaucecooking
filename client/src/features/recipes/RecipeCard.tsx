@@ -1,27 +1,16 @@
 import {
   Avatar,
   Card,
+  CardContent,
   CardHeader,
   CardMedia,
   makeStyles,
-  CardActions,
-  CardContent,
   Typography,
 } from "@material-ui/core";
-import { Recipe, useRecipe } from "./state";
-import { RecipeCardActions } from "./RecipeCardActions";
-import { RecipeCardComments } from "./RecipeCardComments";
 import React from "react";
-import { IUser } from "../../common/interfaces/IUser";
 import { getFullName } from "../../utils/getFullName";
-
-const image = "https://scx2.b-cdn.net/gfx/news/hires/2016/howcuttingdo.jpg";
-
-const user = {
-  fullName: "Jamie Oliver",
-  photoUrl:
-    "https://media1.popsugar-assets.com/files/thumbor/YgtUHW5gmKkzAYFTFLDbqcZiBF4/27x0:2920x2893/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/03/24/575/n/42718227/e915616e5e7a01d456f9d7.13584839_/i/jamie-oliver-keep-cooking-carry-on-tv-series.jpg",
-};
+import { useUser } from "../users/state/user.store";
+import { useRecipe } from "./state";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,21 +35,23 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   recipeId: string;
-  user: IUser;
+  userId: string;
 }
 
-export const RecipeCard: React.FC<Props> = ({ recipeId, user }) => {
+export const RecipeCard: React.FC<Props> = ({ recipeId, userId }) => {
   const classes = useStyles();
   const recipe = useRecipe(recipeId);
   if (!recipe) return <div>Not found</div>;
 
-  const fullName = getFullName(user);
+  const user = useUser(userId);
+
+  const fullName = user ? getFullName(user) : "";
   const recipeImage = recipe.media[0];
 
   const CardAvatar = (
     <Avatar
       aria-label="recipe"
-      src={user.photoUrl}
+      src={user?.photoUrl}
       className={classes.avatar}
       data-testid="recipe-card-avatar"
     >
@@ -80,13 +71,13 @@ export const RecipeCard: React.FC<Props> = ({ recipeId, user }) => {
       <RecipeCardActions
         recipeId={recipeId}
         className={classes.actions}
-      ></RecipeCardActions>
+      ></RecipeCardActions> */}
       <CardContent className={classes.body}>
         <Typography variant="h6">{recipe.name}</Typography>
         <Typography paragraph>This will be a description.</Typography>
 
-        <RecipeCardComments></RecipeCardComments>
-      </CardContent> */}
+        {/* <RecipeCardComments></RecipeCardComments> */}
+      </CardContent>
     </Card>
   );
 };
